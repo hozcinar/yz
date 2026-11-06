@@ -203,14 +203,37 @@
     }
     .status-bar {
       width: 100%;
-      padding: 11px 14px;
+      padding: 12px 14px;
       border-radius: 8px;
       font-weight: 700;
-      font-size: 15px;
+      font-size: 15.5px;
       text-align: center;
       background: var(--blue-light);
       color: var(--navy);
-      border: 1px solid #bdd1e0;
+      border: 2px solid #bdd1e0;
+      transition: all 0.2s ease;
+    }
+    .status-bar.win-human {
+      background: #dcfce7;
+      color: #14532d;
+      border-color: #16a34a;
+      font-size: 22px;
+      padding: 16px 18px;
+      box-shadow: 0 4px 14px rgba(22, 163, 74, 0.22);
+    }
+    .status-bar.win-bot {
+      background: #fee2e2;
+      color: #7f1d1d;
+      border-color: #dc2626;
+      font-size: 22px;
+      padding: 16px 18px;
+      box-shadow: 0 4px 14px rgba(220, 38, 38, 0.22);
+    }
+    .status-sub {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      margin-top: 4px;
     }
     .hex-board {
       display: grid;
@@ -231,6 +254,7 @@
       cursor: pointer;
       user-select: none;
       position: relative;
+      transition: background-color 0.25s ease, transform 0.2s ease;
     }
     .cell.light { background: #f4f7fa; }
     .cell.dark { background: #d6e2ec; }
@@ -238,6 +262,19 @@
       outline: 4px solid #e69500;
       outline-offset: -4px;
       background: #fff3cd;
+    }
+    .cell.bot-selected {
+      outline: 4px solid #7c3aed;
+      outline-offset: -4px;
+      background: #ede9fe;
+    }
+    .cell.last-from {
+      background: #e0e7ff;
+    }
+    .cell.last-to {
+      background: #c7d2fe;
+      outline: 3px solid #4f46e5;
+      outline-offset: -3px;
     }
     .cell.valid-move::after {
       content: "";
@@ -628,6 +665,8 @@
     // ==================== HEXAPAWN / MENACE RL ====================
     let board = [];
     let selectedCell = null;
+    let botSelectedCell = null;
+    let lastMove = null;
     let turn = 'W';
     let gameOver = false;
     let botHistory = [];
@@ -647,6 +686,20 @@
     const colNames = ["A", "B", "C"];
     function coordName(r, c) { return colNames[c] + rowNames[r]; }
 
+    function setBanner(type, mainText, subText) {
+      const el = document.getElementById("gameStatus");
+      el.classList.remove("win-human", "win-bot");
+      if (type === "human") {
+        el.classList.add("win-human");
+        el.innerHTML = `🎉 KAZANDINIZ!<span class="status-sub">${subText}</span>`;
+      } else if (type === "bot") {
+        el.classList.add("win-bot");
+        el.innerHTML = `🤖 KAYBETTİNİZ — MAKİNE KAZANDI!<span class="status-sub">${subText}</span>`;
+      } else {
+        el.textContent = mainText;
+      }
+    }
+
     function initBoard() {
       board = [
         ['B', 'B', 'B'],
@@ -654,6 +707,8 @@
         ['W', 'W', 'W']
       ];
       selectedCell = null;
+      botSelectedCell = null;
+      lastMove = null;
       turn = 'W';
       gameOver = false;
       botHistory = [];
@@ -840,20 +895,20 @@
         );
         if (chosen) {
           applyMove(board, chosen);
+          lastMove = { from: chosen.from, to: chosen.to };
           selectedCell = null;
           const w = checkWinner(board, 'B');
           if (w) {
             gameOver = true;
-            document.getElementById("gameStatus").textContent =
-              "Tebrikler, Bu Maçı Sen Kazandın! Makine son hatasını sildi — 'Yeni Maç Başlat'a tıkla.";
+            setBanner("human", "", "Makine son yaptığı hatalı hamlenin jetonlarını sildi — Aşağıdan 'Yeni Maç Başlat'a tıkla.");
             reinforceBot('W');
             renderBoard();
             return;
           }
           turn = 'B';
-          document.getElementById("gameStatus").textContent = "Makine hafıza kutusuna bakıp hamle seçiyor...";
+          setBanner("info", "Makine hafıza kutusuna bakıp hamle düşünüyor...", "");
           renderBoard();
-          setTimeout(botTurn, 360);
+          setTimeout(botTurn, 650);
         }
       }
     }
@@ -863,31 +918,39 @@
       const decision = chooseBotMove(board);
       if (!decision) {
         gameOver = true;
-        document.getElementById("gameStatus").textContent =
-          "Makinenin bu durumda hiç jetonu kalmadığı için PES ETTİ. Sen kazandın! 'Yeni Maç Başlat'a tıkla.";
+        setBanner("human", "", "Makinenin bu durumda hiç jetonu kalmadığı için PES ETTİ! 'Yeni Maç Başlat'a tıkla.");
         reinforceBot('W');
         renderBoard();
         return;
       }
-      botHistory.push({
-        stateKey: decision.stateKey,
-        moveKey: decision.move.key,
-        capture: decision.move.capture
-      });
-      applyMove(board, decision.move);
-      const w = checkWinner(board, 'W');
-      if (w) {
-        gameOver = true;
-        document.getElementById("gameStatus").textContent =
-          `Makine (${decision.move.label}) oynadı ve Maçı Kazandı! 'Yeni Maç Başlat'a tıkla.`;
-        reinforceBot('B');
-        renderBoard();
-        return;
-      }
-      turn = 'W';
-      document.getElementById("gameStatus").textContent =
-        `Makine (${decision.move.label}) oynadı. Sıra Sende (Beyaz ♙): Piyonuna tıkla.`;
+      // Step 1: highlight the black pawn the machine selected so student can follow visually
+      botSelectedCell = decision.move.from;
+      setBanner("info", `Makine ${coordName(decision.move.from[0], decision.move.from[1])} karesindeki piyonunu seçti, hamlesini yapıyor...`, "");
       renderBoard();
+
+      // Step 2: execute the move after 650ms
+      setTimeout(() => {
+        if (gameOver) return;
+        botSelectedCell = null;
+        botHistory.push({
+          stateKey: decision.stateKey,
+          moveKey: decision.move.key,
+          capture: decision.move.capture
+        });
+        applyMove(board, decision.move);
+        lastMove = { from: decision.move.from, to: decision.move.to };
+        const w = checkWinner(board, 'W');
+        if (w) {
+          gameOver = true;
+          setBanner("bot", "", `Makine (${decision.move.label}) oynadı ve hamlelerine +1 ödül jetonu ekledi! 'Yeni Maç Başlat'a tıkla.`);
+          reinforceBot('B');
+          renderBoard();
+          return;
+        }
+        turn = 'W';
+        setBanner("info", `Makine (${decision.move.label}) oynadı. Sıra Sende (Beyaz ♙): Piyonuna tıkla.`, "");
+        renderBoard();
+      }, 650);
     }
 
     function renderBoard() {
@@ -902,8 +965,15 @@
           const div = document.createElement("div");
           const isLight = (r + c) % 2 === 0;
           div.className = `cell ${isLight ? 'light' : 'dark'}`;
+          if (lastMove) {
+            if (lastMove.from[0] === r && lastMove.from[1] === c) div.classList.add("last-from");
+            if (lastMove.to[0] === r && lastMove.to[1] === c) div.classList.add("last-to");
+          }
           if (selectedCell && selectedCell[0] === r && selectedCell[1] === c) {
             div.classList.add("selected");
+          }
+          if (botSelectedCell && botSelectedCell[0] === r && botSelectedCell[1] === c) {
+            div.classList.add("bot-selected");
           }
           if (legal.some(m => m.to[0] === r && m.to[1] === c)) {
             div.classList.add("valid-move");
@@ -993,8 +1063,7 @@
       renderMemoryUI();
       document.getElementById("lastUpdateText").innerHTML =
         `<b>${episodes} Hızlı Eğitim Maçı Tamamlandı!</b> Sağdaki hafıza kutusunda hatalı hamlelerin nasıl silindiğini (0 jeton) incele ve şimdi makineyle oyna!`;
-      document.getElementById("gameStatus").textContent =
-        "50 maçlık eğitim tamamlandı! Şimdi piyonuna tıklayıp eğitilmiş makineyi yenmeyi dene!";
+      setBanner("info", "50 maçlık eğitim tamamlandı! Şimdi piyonuna tıklayıp eğitilmiş makineyi yenmeyi dene!", "");
     }
 
     function renderTrackStrip() {
@@ -1084,7 +1153,7 @@
     function newGame() {
       initBoard();
       renderBoard();
-      document.getElementById("gameStatus").textContent = "Yeni maç başladı. Sıra Sende (Beyaz ♙): Piyonuna tıkla.";
+      setBanner("info", "Yeni maç başladı. Sıra Sende (Beyaz ♙): Piyonuna tıkla.", "");
     }
 
     function resetBotMemory() {
@@ -1097,6 +1166,7 @@
       renderBoard();
       updateStatsUI();
       renderMemoryUI();
+      setBanner("info", "Makinenin hafızası sıfırlandı. Sıra Sende (Beyaz ♙): Piyonuna tıkla.", "");
       document.getElementById("lastUpdateText").textContent =
         "Makinenin hafızası sıfırlandı. Yeniden hiçbir şey bilmeyen başlangıç durumuna döndü.";
     }
