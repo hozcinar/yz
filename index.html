@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ödül ve Cezayla Öğrenen Makine — 9. ve 10. Sınıf YZ Laboratuvarı</title>
+  <style>
+    :root {
+      --navy: #18324a;
+      --teal: #2f6b67;
+      --teal-light: #eaf3f1;
+      --blue-light: #eaf2f7;
+      --amber-light: #fff6e5;
+      --border: #c8d0d6;
+      --text: #202020;
+      --muted: #556068;
+      --danger: #b8332a;
+      --success: #216e39;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: #f4f7f9;
+      line-height: 1.45;
+    }
+    header {
+      background: var(--navy);
+      color: #fff;
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 19px;
+      font-weight: 700;
+    }
+    header p {
+      margin: 4px 0 0;
+      font-size: 13px;
+      color: #d0dee8;
+    }
+    .tabs {
+      display: flex;
+      gap: 8px;
+      background: #0f2233;
+      padding: 6px;
+      border-radius: 8px;
+    }
+    .tab-btn {
+      border: none;
+      background: transparent;
+      color: #c5d5e2;
+      padding: 9px 15px;
+      border-radius: 6px;
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+    .tab-btn.active {
+      background: var(--teal);
+      color: #fff;
+    }
+    main {
+      max-width: 1220px;
+      margin: 16px auto;
+      padding: 0 16px 32px;
+    }
+    .panel {
+      display: none;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+    .panel.active { display: block; }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1.12fr 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+    @media (max-width: 920px) {
+      .grid-2 { grid-template-columns: 1fr; }
+    }
+    .card {
+      background: #fafcfd;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 13px 15px;
+      margin-bottom: 13px;
+    }
+    .card.teal { background: var(--teal-light); }
+    .card.blue { background: var(--blue-light); }
+    .card.amber { background: var(--amber-light); border-color: #e6c98a; }
+    h2 {
+      margin: 0 0 6px;
+      font-size: 17.5px;
+      color: var(--navy);
+    }
+    h3 {
+      margin: 0 0 6px;
+      font-size: 14.5px;
+      color: var(--navy);
+    }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin: 10px 0;
+    }
+    label {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--navy);
+    }
+    select {
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 13px;
+      background: #fff;
+    }
+    button.action {
+      background: var(--navy);
+      color: #fff;
+      border: none;
+      padding: 8px 13px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button.action.secondary { background: var(--teal); }
+    button.action.warn { background: var(--danger); }
+    button.action:hover { opacity: 0.92; }
+
+    /* Hexapawn Board */
+    .board-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .hex-board {
+      display: grid;
+      grid-template-columns: repeat(3, 94px);
+      grid-template-rows: repeat(3, 94px);
+      border: 3px solid var(--navy);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .cell {
+      width: 94px;
+      height: 94px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      cursor: pointer;
+      user-select: none;
+      position: relative;
+    }
+    .cell.light { background: #f2f5f8; }
+    .cell.dark { background: #d5e0ea; }
+    .cell.selected { outline: 4px solid #e69500; outline-offset: -4px; background: #fff2cc; }
+    .cell.valid-move::after {
+      content: "";
+      width: 22px;
+      height: 22px;
+      background: rgba(47, 107, 103, 0.78);
+      border-radius: 50%;
+      position: absolute;
+    }
+    .coord {
+      position: absolute;
+      top: 4px;
+      left: 6px;
+      font-size: 10px;
+      color: #6b7885;
+      font-weight: 700;
+    }
+    .status-bar {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 14px;
+      text-align: center;
+      background: var(--blue-light);
+      color: var(--navy);
+      border: 1px solid var(--border);
+    }
+    .track-strip {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 4px;
+      width: 100%;
+      margin-top: 4px;
+    }
+    .track-box {
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 4px 2px;
+      text-align: center;
+      font-size: 11.5px;
+      font-weight: 700;
+      background: #fff;
+      color: var(--muted);
+    }
+    .track-box.win-w { background: #dcfce7; color: #166534; border-color: #86efac; }
+    .track-box.win-b { background: #fee2e2; color: #991b1b; border-color: #fca5a5; }
+    .rule-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 8px;
+      border-bottom: 1px solid #e1e7ec;
+      font-size: 12.5px;
+    }
+    .weight-bar {
+      display: inline-block;
+      height: 10px;
+      border-radius: 4px;
+      background: var(--teal);
+      margin-right: 6px;
+    }
+    /* Clustering */
+    canvas {
+      width: 100%;
+      max-width: 560px;
+      height: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #ffffff;
+      display: block;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+      margin-top: 8px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 6px 8px;
+      text-align: center;
+    }
+    th {
+      background: var(--navy);
+      color: #fff;
+      font-weight: 600;
+    }
+    tr:nth-child(even) { background: #f6f9fb; }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Ödül ve Cezayla Öğrenen Makine — 9. ve 10. Sınıf YZ Laboratuvarı</h1>
+      <p>Bu Hafta: Pekiştirmeli Öğrenme (3x3 Piyon Makinesi / MENACE) · Gelecek Hafta: Denetimsiz Öğrenme (Kümeleme)</p>
+    </div>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('tabRL', this)">Bu Hafta: 3x3 Piyon Makinesi (Pekiştirmeli Öğrenme)</button>
+      <button class="tab-btn" onclick="switchTab('tabCluster', this)">Gelecek Hafta: Etiketsiz Kümeleme (Denetimsiz Öğrenme)</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- TAB 1 (DEFAULT): REINFORCEMENT LEARNING (HEXAPAWN / MENACE) -->
+    <section id="tabRL" class="panel active">
+      <div class="grid-2">
+        <div>
+          <div class="card blue">
+            <h2>3x3 Piyon Makinesi (MENACE — Pekiştirmeli Öğrenme)</h2>
+            <p style="margin:0; font-size:13px;">
+              Geçen hafta Teachable Machine'de doğru etiketleri <b>biz vermiştik</b>. Bu makineye ise <b>hiçbir satranç kuralı veya doğru hamle öğretilmedi!</b>
+              Başlangıçta her olası hamleye <b>3 jeton</b> verir ve rastgele oynar. Maçı kaybederse son hamlesinin jetonları <b>silinir (Ceza)</b>; kazanırsa hamlelerine <b>+1 jeton eklenir (Ödül)</b>.
+              <br/><b>Oyun Kuralı:</b> Piyonlar 1 kare düz ilerler, 1 kare çapraz rakip taş yer. Karşı sıraya ulaşan, tüm rakip taşları yiyen veya rakibi hamlesiz bırakan kazanır!
+            </p>
+          </div>
+
+          <div class="controls">
+            <div>
+              <label for="rewardPolicy">Makinenin Ödül / Ceza Kuralı:</label><br/>
+              <select id="rewardPolicy" onchange="updatePolicyNotice()">
+                <option value="standard" selected>1. Doğru Tasarım: Maç Kazanma (+1), Kaybettiren Hamleyi Sil (0)</option>
+                <option value="hacked">2. YANLIŞ ÖDÜL TUZAĞI: Sadece Düz İlerleme (+5), Taş Yeme (-2)</option>
+              </select>
+            </div>
+            <button class="action" onclick="newGame()">Yeni Maç Başlat</button>
+            <button class="action secondary" onclick="trainBot(50)">Hızlı Eğit (50 Maç Simüle Et)</button>
+            <button class="action warn" onclick="resetBotMemory()">Hafızayı Sıfırla</button>
+          </div>
+
+          <div class="board-wrap">
+            <div id="gameStatus" class="status-bar">
+              Sıra Sizde (Beyaz ♙): Oynamak istediğiniz piyonunuza tıklayın.
+            </div>
+
+            <div id="hexBoard" class="hex-board"></div>
+
+            <div style="width:100%;">
+              <div style="font-size:12px; font-weight:700; color:var(--navy); margin-bottom:3px;">
+                10 Maçlık Öğrenme Eğrisi Şeridi (Çalışma kağıdındaki tabloya kaydedin — <span style="color:#166534;">İ = İnsan Kazandı</span>, <span style="color:#991b1b;">M = Makine Kazandı</span>):
+              </div>
+              <div id="trackStrip" class="track-strip"></div>
+            </div>
+
+            <div style="display:flex; gap:16px; font-size:13px; font-weight:700; color:var(--navy); flex-wrap:wrap; justify-content:center;">
+              <span>Toplam Maç: <span id="statTotal">0</span></span>
+              <span style="color:var(--success);">İnsan (Beyaz) Kazandı: <span id="statHuman">0</span></span>
+              <span style="color:var(--danger);">Makine (Siyah) Kazandı: <span id="statBot">0</span></span>
+              <span>Makinenin Son 10 Maç Başarısı: <span id="statRecent">0%</span></span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card teal">
+            <h3>Sınıf İçi Uygulama Adımları (Çalışma Kağıdı Görevleri)</h3>
+            <ol style="margin:4px 0 0; padding-left:18px; font-size:12.8px;">
+              <li><b>Adım 1 — Öğrenme Eğrisi (10 Maç):</b> "Hızlı Eğit" düğmesine basmadan makineyle <b>10 maç</b> bizzat oynayın. Her maçın sonucunu (<b>İ</b> veya <b>M</b>) çalışma kağıdındaki 1–10 şeridine yazın. İlk 5 maç ile son 5 maç arasındaki farkı gözlemleyin.</li>
+              <li><b>Adım 2 — Hafıza Denetimi:</b> Sağ aşağıdaki hafıza kutusunda <b>0 jetona düşüp elenen</b> bir hamleyi çalışma kağıdına kaydedin. İsterseniz şimdi <b>"Hızlı Eğit (50 Maç)"</b> düğmesine basıp makineyi yenmeyi tekrar deneyin!</li>
+              <li><b>Adım 3 — Yanlış Ödül Tuzağı:</b> Üst menüden <b>"2. YANLIŞ ÖDÜL TUZAĞI: Sadece Düz İlerleme (+5)"</b> seçeneğini seçin. <b>"Hafızayı Sıfırla"</b> ve ardından <b>"Hızlı Eğit (50 Maç)"</b> düğmesine basıp makineyle 3 maç oynayın!</li>
+            </ol>
+          </div>
+
+          <div class="card amber" id="lastUpdateCard">
+            <h3>Son Maçın Öğrenme Kaydı (Ödül / Ceza Güncellemesi)</h3>
+            <div id="lastUpdateText" style="font-size:12.8px;">
+              Henüz bir maç tamamlanmadı. Bir maç oynadığınızda makinenin hangi hamlesine <b>Ödül (+)</b> verildiği veya hangi kaybettiren hamlenin <b>Ceza (0 jeton)</b> ile elendiği burada görünecek.
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Makinenin Hafıza Kutuları (Tahta Durumu → Hamle Jetonları)</h3>
+            <p style="margin:0 0 6px; font-size:12px; color:var(--muted);">
+              Makine taş oyununu "anlamaz"; yalnızca her tahta durumunda hangi hamlede daha çok jeton kalmışsa onu seçer. <b>0 jeton</b> olan hamleler bir daha seçilmez!
+            </p>
+            <div id="memoryBox" style="max-height: 270px; overflow-y: auto; border:1px solid var(--border); border-radius:6px; padding:6px; background:#fff;"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: NEXT WEEK UNSUPERVISED CLUSTERING -->
+    <section id="tabCluster" class="panel">
+      <div class="grid-2">
+        <div>
+          <div class="card blue">
+            <h2>Gelecek Hafta Modülü: Etiketsiz Veride Kümeleme (Denetimsiz Öğrenme)</h2>
+            <p style="margin:0; font-size:13.5px;">
+              Okul radyosuna kayıt olan <b>12 öğrencinin</b> dinleme verisi var ama <b>hiçbirinde grup etiketi yok!</b>
+              Bilgisayar sadece <b>benzerlik (uzaklık)</b> hesabıyla onları nasıl gruplayacak?
+            </p>
+          </div>
+
+          <div class="controls">
+            <div>
+              <label for="xAxis">Yatay Eksen (Özellik 1):</label><br/>
+              <select id="xAxis" onchange="resetClustering()">
+                <option value="tempo" selected>Tempo / Hız (1–10)</option>
+                <option value="acoustic">Akustik / Sakinlik (1–10)</option>
+                <option value="energy">Dans / Enerji (1–10)</option>
+                <option value="hour">Kayıt Saati — TUZAK ÖZELLİK (1–10)</option>
+              </select>
+            </div>
+            <div>
+              <label for="yAxis">Dikey Eksen (Özellik 2):</label><br/>
+              <select id="yAxis" onchange="resetClustering()">
+                <option value="tempo">Tempo / Hız (1–10)</option>
+                <option value="acoustic" selected>Akustik / Sakinlik (1–10)</option>
+                <option value="energy">Dans / Enerji (1–10)</option>
+                <option value="hour">Kayıt Saati — TUZAK ÖZELLİK (1–10)</option>
+              </select>
+            </div>
+            <div>
+              <label for="kVal">Küme Sayısı (K):</label><br/>
+              <select id="kVal" onchange="resetClustering()">
+                <option value="2">K = 2 Küme</option>
+                <option value="3" selected>K = 3 Küme</option>
+                <option value="4">K = 4 Küme</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="controls">
+            <button class="action" onclick="stepKMeans()">1 Adım İlerle (En Yakın Merkeze Ata)</button>
+            <button class="action secondary" onclick="runFullKMeans()">Kümeleri Otomatik Bul</button>
+            <button class="action warn" onclick="resetClustering()">Sıfırla</button>
+          </div>
+
+          <canvas id="clusterCanvas" width="560" height="400"></canvas>
+          <p id="clusterStatus" style="font-size:13px; font-weight:600; color:var(--navy); margin-top:8px;">
+            Durum: Henüz kümeleme başlamadı. Noktalar etiketsiz (gri). "Kümeleri Otomatik Bul" düğmesine basın.
+          </p>
+        </div>
+
+        <div>
+          <div class="card teal">
+            <h3>Denetimsiz Öğrenme Deney Görevleri</h3>
+            <ol style="margin:6px 0 0; padding-left:18px; font-size:13px;">
+              <li><b>Standart Kümeleme:</b> Yatay eksende <i>Tempo</i>, dikey eksende <i>Akustik</i> ve <b>K = 3</b> seçiliyken <b>"Kümeleri Otomatik Bul"</b>a basın. Oluşan 3 grubu kendi sözcüklerinizle adlandırın.</li>
+              <li><b>K Değişirse Ne Olur?</b> Küme sayısını <b>K = 2</b> ve <b>K = 4</b> yapıp tekrar çalıştırın.</li>
+              <li><b>Tuzak Özellik Deneyi:</b> Yatay ekseni <b>"Kayıt Saati (Tuzak Özellik)"</b> yapın. Birlikte kümelenen öğrencilerin müzik zevki hâlâ birbirine benziyor mu?</li>
+            </ol>
+          </div>
+
+          <div class="card">
+            <h3>Etiketsiz Öğrenci Veri Tablosu (12 Kayıt)</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Öğrenci</th>
+                  <th>Tempo</th>
+                  <th>Akustik</th>
+                  <th>Enerji</th>
+                  <th>Kayıt Saati</th>
+                  <th>Atanan Küme</th>
+                </tr>
+              </thead>
+              <tbody id="studentTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    function switchTab(id, btn) {
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      btn.classList.add('active');
+    }
+
+    // ==================== K-MEANS CLUSTERING ====================
+    const students = [
+      { id: "Ö-01", tempo: 8.8, acoustic: 2.0, energy: 9.0, hour: 2.0, cluster: null },
+      { id: "Ö-02", tempo: 8.2, acoustic: 2.6, energy: 8.4, hour: 8.5, cluster: null },
+      { id: "Ö-03", tempo: 9.1, acoustic: 1.8, energy: 8.7, hour: 5.0, cluster: null },
+      { id: "Ö-04", tempo: 7.9, acoustic: 2.9, energy: 8.1, hour: 9.0, cluster: null },
+      { id: "Ö-05", tempo: 2.2, acoustic: 8.7, energy: 2.1, hour: 2.5, cluster: null },
+      { id: "Ö-06", tempo: 2.8, acoustic: 8.2, energy: 2.5, hour: 8.0, cluster: null },
+      { id: "Ö-07", tempo: 1.9, acoustic: 9.1, energy: 1.8, hour: 4.5, cluster: null },
+      { id: "Ö-08", tempo: 2.5, acoustic: 7.9, energy: 2.8, hour: 9.2, cluster: null },
+      { id: "Ö-09", tempo: 5.2, acoustic: 5.5, energy: 5.4, hour: 1.8, cluster: null },
+      { id: "Ö-10", tempo: 5.8, acoustic: 4.9, energy: 5.1, hour: 8.8, cluster: null },
+      { id: "Ö-11", tempo: 4.9, acoustic: 5.8, energy: 4.8, hour: 5.2, cluster: null },
+      { id: "Ö-12", tempo: 5.5, acoustic: 5.2, energy: 5.6, hour: 2.2, cluster: null }
+    ];
+
+    const clusterColors = ["#d95f02", "#1b9e77", "#7570b3", "#e7298a"];
+    const clusterNames = ["Küme A (Turuncu)", "Küme B (Yeşil)", "Küme C (Mor)", "Küme D (Pembe)"];
+    let centroids = [];
+    let stepCount = 0;
+
+    function initCentroids() {
+      const k = parseInt(document.getElementById("kVal").value, 10);
+      const xKey = document.getElementById("xAxis").value;
+      const yKey = document.getElementById("yAxis").value;
+      const pts = students.map(s => ({ x: s[xKey], y: s[yKey] }));
+      const mean = {
+        x: pts.reduce((a, p) => a + p.x, 0) / pts.length,
+        y: pts.reduce((a, p) => a + p.y, 0) / pts.length
+      };
+      const dist = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
+      centroids = [];
+      let first = pts.reduce((best, p) => (dist(p, mean) > dist(best, mean) ? p : best), pts[0]);
+      centroids.push({ x: first.x, y: first.y });
+      while (centroids.length < k) {
+        const next = pts.reduce((best, p) => {
+          const dp = Math.min(...centroids.map(c => dist(p, c)));
+          const db = Math.min(...centroids.map(c => dist(best, c)));
+          return dp > db ? p : best;
+        }, pts[0]);
+        centroids.push({ x: next.x, y: next.y });
+      }
+      students.forEach(s => s.cluster = null);
+      stepCount = 0;
+    }
+
+    function resetClustering() {
+      initCentroids();
+      drawClusters();
+      renderStudentTable();
+      document.getElementById("clusterStatus").textContent =
+        "Durum: Eksenler hazır. Noktalar henüz etiketsiz. '1 Adım İlerle' veya 'Kümeleri Otomatik Bul' düğmesine basın.";
+    }
+
+    function stepKMeans() {
+      const xKey = document.getElementById("xAxis").value;
+      const yKey = document.getElementById("yAxis").value;
+      if (centroids.length === 0) initCentroids();
+
+      students.forEach(s => {
+        let best = 0;
+        let bestDist = Infinity;
+        centroids.forEach((c, idx) => {
+          const d = Math.hypot(s[xKey] - c.x, s[yKey] - c.y);
+          if (d < bestDist) { bestDist = d; best = idx; }
+        });
+        s.cluster = best;
+      });
+
+      centroids.forEach((c, idx) => {
+        const members = students.filter(s => s.cluster === idx);
+        if (members.length > 0) {
+          c.x = members.reduce((a, b) => a + b[xKey], 0) / members.length;
+          c.y = members.reduce((a, b) => a + b[yKey], 0) / members.length;
+        }
+      });
+
+      stepCount++;
+      drawClusters();
+      renderStudentTable();
+      document.getElementById("clusterStatus").textContent =
+        `Adım ${stepCount} tamamlandı: Her öğrenci en yakın küme merkezine (★) atandı ve merkezler ortalamaya kaydırıldı.`;
+    }
+
+    function runFullKMeans() {
+      initCentroids();
+      for (let i = 0; i < 6; i++) stepKMeans();
+      document.getElementById("clusterStatus").textContent =
+        `Kümeleme tamamlandı (${centroids.length} Küme). Hiçbir etiket vermeden makine noktaları uzaklıklarına göre ayırdı!`;
+    }
+
+    function drawClusters() {
+      const canvas = document.getElementById("clusterCanvas");
+      const ctx = canvas.getContext("2d");
+      const xKey = document.getElementById("xAxis").value;
+      const yKey = document.getElementById("yAxis").value;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const padL = 52, padR = 24, padT = 24, padB = 42;
+      const w = canvas.width - padL - padR;
+      const h = canvas.height - padT - padB;
+      const toX = v => padL + (v / 10) * w;
+      const toY = v => padT + h - (v / 10) * h;
+
+      ctx.strokeStyle = "#e5ecf0";
+      ctx.lineWidth = 1;
+      for (let i = 0; i <= 10; i += 2) {
+        ctx.beginPath(); ctx.moveTo(toX(i), padT); ctx.lineTo(toX(i), padT + h); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(padL, toY(i)); ctx.lineTo(padL + w, toY(i)); ctx.stroke();
+        ctx.fillStyle = "#556068";
+        ctx.font = "11px Arial";
+        ctx.fillText(i.toString(), toX(i) - 4, padT + h + 16);
+        ctx.fillText(i.toString(), padL - 22, toY(i) + 4);
+      }
+
+      students.forEach(s => {
+        if (s.cluster !== null && centroids[s.cluster]) {
+          ctx.strokeStyle = clusterColors[s.cluster] + "55";
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.moveTo(toX(s[xKey]), toY(s[yKey]));
+          ctx.lineTo(toX(centroids[s.cluster].x), toY(centroids[s.cluster].y));
+          ctx.stroke();
+        }
+      });
+
+      students.forEach(s => {
+        const cx = toX(s[xKey]);
+        const cy = toY(s[yKey]);
+        ctx.beginPath();
+        ctx.arc(cx, cy, 8, 0, Math.PI * 2);
+        ctx.fillStyle = s.cluster === null ? "#7d8892" : clusterColors[s.cluster];
+        ctx.fill();
+        ctx.strokeStyle = "#fff";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.fillStyle = "#18324a";
+        ctx.font = "bold 11px Arial";
+        ctx.fillText(s.id, cx + 10, cy + 4);
+      });
+
+      centroids.forEach((c, idx) => {
+        const cx = toX(c.x);
+        const cy = toY(c.y);
+        ctx.fillStyle = clusterColors[idx];
+        ctx.font = "bold 20px Arial";
+        ctx.fillText("★", cx - 9, cy + 7);
+      });
+    }
+
+    function renderStudentTable() {
+      const tbody = document.getElementById("studentTableBody");
+      tbody.innerHTML = students.map(s => {
+        const badge = s.cluster === null
+          ? `<span style="color:#777;">Etiketsiz</span>`
+          : `<span class="badge" style="background:${clusterColors[s.cluster]}">${clusterNames[s.cluster]}</span>`;
+        return `<tr>
+          <td><b>${s.id}</b></td>
+          <td>${s.tempo}</td>
+          <td>${s.acoustic}</td>
+          <td>${s.energy}</td>
+          <td>${s.hour}</td>
+          <td>${badge}</td>
+        </tr>`;
+      }).join("");
+    }
+
+    // ==================== HEXAPAWN / MENACE RL ====================
+    let board = [];
+    let selectedCell = null;
+    let turn = 'W';
+    let gameOver = false;
+    let botHistory = [];
+    let botMemory = {};
+    let stats = { total: 0, human: 0, bot: 0, recentResults: [], firstTen: [] };
+
+    const rowNames = ["3", "2", "1"];
+    const colNames = ["A", "B", "C"];
+    function coordName(r, c) { return colNames[c] + rowNames[r]; }
+
+    function initBoard() {
+      board = [
+        ['B', 'B', 'B'],
+        ['.', '.', '.'],
+        ['W', 'W', 'W']
+      ];
+      selectedCell = null;
+      turn = 'W';
+      gameOver = false;
+      botHistory = [];
+    }
+
+    function getStateKey(b) {
+      return b.map(r => r.join("")).join("/");
+    }
+
+    function getLegalMoves(b, player) {
+      const dir = player === 'W' ? -1 : 1;
+      const enemy = player === 'W' ? 'B' : 'W';
+      const moves = [];
+      for (let r = 0; r < 3; r++) {
+        for (let c = 0; c < 3; c++) {
+          if (b[r][c] !== player) continue;
+          const nr = r + dir;
+          if (nr < 0 || nr >= 3) continue;
+          if (b[nr][c] === '.') {
+            moves.push({
+              from: [r, c],
+              to: [nr, c],
+              capture: false,
+              key: `${coordName(r,c)}->${coordName(nr,c)}`,
+              label: `${coordName(r,c)} → ${coordName(nr,c)} (Düz İlerle)`
+            });
+          }
+          for (const dc of [-1, 1]) {
+            const nc = c + dc;
+            if (nc >= 0 && nc < 3 && b[nr][nc] === enemy) {
+              moves.push({
+                from: [r, c],
+                to: [nr, nc],
+                capture: true,
+                key: `${coordName(r,c)}x${coordName(nr,nc)}`,
+                label: `${coordName(r,c)} × ${coordName(nr,nc)} (Taş Ye)`
+              });
+            }
+          }
+        }
+      }
+      return moves;
+    }
+
+    function ensureStateInMemory(b) {
+      const key = getStateKey(b);
+      if (!botMemory[key]) {
+        const moves = getLegalMoves(b, 'B');
+        botMemory[key] = {};
+        moves.forEach(m => {
+          botMemory[key][m.key] = { ...m, weight: 3 };
+        });
+      }
+      return key;
+    }
+
+    function chooseBotMove(b) {
+      const stateKey = ensureStateInMemory(b);
+      const moveObj = botMemory[stateKey];
+      const entries = Object.values(moveObj).filter(m => m.weight > 0);
+      if (entries.length === 0) return null;
+
+      const totalWeight = entries.reduce((acc, m) => acc + m.weight, 0);
+      let r = Math.random() * totalWeight;
+      for (const m of entries) {
+        r -= m.weight;
+        if (r <= 0) return { stateKey, move: m };
+      }
+      return { stateKey, move: entries[entries.length - 1] };
+    }
+
+    function applyMove(b, move) {
+      const [fr, fc] = move.from;
+      const [tr, tc] = move.to;
+      b[tr][tc] = b[fr][fc];
+      b[fr][fc] = '.';
+    }
+
+    function checkWinner(b, nextPlayer) {
+      for (let c = 0; c < 3; c++) {
+        if (b[0][c] === 'W') return 'W';
+        if (b[2][c] === 'B') return 'B';
+      }
+      let wCount = 0, bCount = 0;
+      for (let r = 0; r < 3; r++) {
+        for (let c = 0; c < 3; c++) {
+          if (b[r][c] === 'W') wCount++;
+          if (b[r][c] === 'B') bCount++;
+        }
+      }
+      if (wCount === 0) return 'B';
+      if (bCount === 0) return 'W';
+      if (getLegalMoves(b, nextPlayer).length === 0) {
+        return nextPlayer === 'W' ? 'B' : 'W';
+      }
+      return null;
+    }
+
+    function reinforceBot(winner, silent = false) {
+      const policy = document.getElementById("rewardPolicy").value;
+      let logs = [];
+      const logMove = (step, entry, oldW, note) => {
+        const delta = entry.weight - oldW;
+        const sign = delta >= 0 ? `+${delta}` : `${delta}`;
+        logs.push(`<li>Durum <code>${step.stateKey}</code> → <b>${entry.label}</b>: Jeton <b>${oldW} → ${entry.weight}</b> (${sign})${note ? " — " + note : ""}</li>`);
+      };
+
+      if (policy === "standard") {
+        if (winner === 'B') {
+          botHistory.forEach(step => {
+            const entry = botMemory[step.stateKey][step.moveKey];
+            if (!entry) return;
+            const oldW = entry.weight;
+            entry.weight = Math.min(12, entry.weight + 1);
+            logMove(step, entry, oldW, "ödül");
+          });
+        } else {
+          for (let i = botHistory.length - 1; i >= 0; i--) {
+            const step = botHistory[i];
+            const entry = botMemory[step.stateKey][step.moveKey];
+            if (!entry) break;
+            const oldW = entry.weight;
+            entry.weight = 0;
+            logMove(step, entry, oldW, i === botHistory.length - 1 ? "kaybettiren hamle elendi" : "bu kutu boşaldığı için önceki hamle de elendi");
+            const remaining = Object.values(botMemory[step.stateKey]).reduce((a, m) => a + m.weight, 0);
+            if (remaining > 0) break;
+          }
+        }
+      } else {
+        // Hacked reward: rewards straight non-capture moves (+5), penalizes captures (-2), ignores win/loss!
+        botHistory.forEach(step => {
+          const entry = botMemory[step.stateKey][step.moveKey];
+          if (!entry) return;
+          const oldW = entry.weight;
+          if (!step.capture) {
+            entry.weight = Math.min(30, entry.weight + 5);
+            logMove(step, entry, oldW, "düz ilerlediği için +5 ödül (maç sonucu önemsenmedi!)");
+          } else {
+            entry.weight = Math.max(0, entry.weight - 2);
+            logMove(step, entry, oldW, "taş yediği için -2 ceza");
+          }
+        });
+      }
+
+      stats.total++;
+      if (winner === 'W') stats.human++;
+      else stats.bot++;
+      stats.recentResults.push(winner === 'B' ? 1 : 0);
+      if (stats.recentResults.length > 10) stats.recentResults.shift();
+      if (!silent && stats.firstTen.length < 10) {
+        stats.firstTen.push(winner);
+      }
+
+      if (!silent) {
+        const title = winner === 'B'
+          ? `<span style="color:var(--danger); font-weight:700;">Makine Kazandı! Güncellenen Jetonlar:</span>`
+          : `<span style="color:var(--success); font-weight:700;">Siz Kazandınız! Güncellenen Jetonlar:</span>`;
+        document.getElementById("lastUpdateText").innerHTML =
+          `${title}<ul style="margin:6px 0 0; padding-left:18px;">${logs.join("")}</ul>`;
+      }
+      updateStatsUI();
+      renderMemoryUI();
+    }
+
+    function onCellClick(r, c) {
+      if (gameOver || turn !== 'W') return;
+      const legal = getLegalMoves(board, 'W');
+
+      if (board[r][c] === 'W') {
+        selectedCell = [r, c];
+        renderBoard();
+        return;
+      }
+
+      if (selectedCell) {
+        const chosen = legal.find(
+          m => m.from[0] === selectedCell[0] && m.from[1] === selectedCell[1] && m.to[0] === r && m.to[1] === c
+        );
+        if (chosen) {
+          applyMove(board, chosen);
+          selectedCell = null;
+          const w = checkWinner(board, 'B');
+          if (w) {
+            gameOver = true;
+            document.getElementById("gameStatus").textContent =
+              "Bu Maçı Siz Kazandınız! Makine kaybettiren hamlesini sildi — 'Yeni Maç Başlat'a basın.";
+            reinforceBot('W');
+            renderBoard();
+            return;
+          }
+          turn = 'B';
+          document.getElementById("gameStatus").textContent = "Makine hafıza kutusuna bakıp hamle seçiyor...";
+          renderBoard();
+          setTimeout(botTurn, 380);
+        }
+      }
+    }
+
+    function botTurn() {
+      if (gameOver) return;
+      const decision = chooseBotMove(board);
+      if (!decision) {
+        gameOver = true;
+        document.getElementById("gameStatus").textContent =
+          "Makinenin bu durumda hiç jetonu kalmadığı için PES ETTİ. Siz kazandınız!";
+        reinforceBot('W');
+        renderBoard();
+        return;
+      }
+      botHistory.push({
+        stateKey: decision.stateKey,
+        moveKey: decision.move.key,
+        capture: decision.move.capture
+      });
+      applyMove(board, decision.move);
+      const w = checkWinner(board, 'W');
+      if (w) {
+        gameOver = true;
+        document.getElementById("gameStatus").textContent =
+          `Makine (${decision.move.label}) oynadı ve Maçı Kazandı! 'Yeni Maç Başlat'a basın.`;
+        reinforceBot('B');
+        renderBoard();
+        return;
+      }
+      turn = 'W';
+      document.getElementById("gameStatus").textContent =
+        `Makine (${decision.move.label}) oynadı. Sıra Sizde (Beyaz ♙).`;
+      renderBoard();
+    }
+
+    function renderBoard() {
+      const container = document.getElementById("hexBoard");
+      container.innerHTML = "";
+      const legal = (turn === 'W' && !gameOver && selectedCell)
+        ? getLegalMoves(board, 'W').filter(m => m.from[0] === selectedCell[0] && m.from[1] === selectedCell[1])
+        : [];
+
+      for (let r = 0; r < 3; r++) {
+        for (let c = 0; c < 3; c++) {
+          const div = document.createElement("div");
+          const isLight = (r + c) % 2 === 0;
+          div.className = `cell ${isLight ? 'light' : 'dark'}`;
+          if (selectedCell && selectedCell[0] === r && selectedCell[1] === c) {
+            div.classList.add("selected");
+          }
+          if (legal.some(m => m.to[0] === r && m.to[1] === c)) {
+            div.classList.add("valid-move");
+          }
+          const piece = board[r][c] === 'W' ? '♙' : (board[r][c] === 'B' ? '♟' : '');
+          div.innerHTML = `<span class="coord">${coordName(r, c)}</span><span>${piece}</span>`;
+          div.onclick = () => onCellClick(r, c);
+          container.appendChild(div);
+        }
+      }
+    }
+
+    function bestWhiteMove(b) {
+      function value(bd, player) {
+        const next = player === 'W' ? 'B' : 'W';
+        let best = player === 'W' ? -2 : 2;
+        for (const m of getLegalMoves(bd, player)) {
+          const nb = bd.map(r => r.slice());
+          applyMove(nb, m);
+          const w = checkWinner(nb, next);
+          const v = w === 'W' ? 1 : w === 'B' ? -1 : value(nb, next);
+          best = player === 'W' ? Math.max(best, v) : Math.min(best, v);
+        }
+        return best;
+      }
+      const scored = getLegalMoves(b, 'W').map(m => {
+        const nb = b.map(r => r.slice());
+        applyMove(nb, m);
+        const w = checkWinner(nb, 'B');
+        return { m, v: w === 'W' ? 1 : w === 'B' ? -1 : value(nb, 'B') };
+      });
+      if (scored.length === 0) return null;
+      const top = Math.max(...scored.map(s => s.v));
+      const cands = scored.filter(s => s.v === top);
+      return cands[Math.floor(Math.random() * cands.length)].m;
+    }
+
+    function trainBot(episodes) {
+      for (let ep = 0; ep < episodes; ep++) {
+        initBoard();
+        let current = 'W';
+        while (!gameOver) {
+          if (current === 'W') {
+            const moves = getLegalMoves(board, 'W');
+            if (moves.length === 0) {
+              gameOver = true;
+              reinforceBot('B', true);
+              break;
+            }
+            const pick = Math.random() < 0.75 ? (bestWhiteMove(board) || moves[0]) : moves[Math.floor(Math.random() * moves.length)];
+            applyMove(board, pick);
+            const w = checkWinner(board, 'B');
+            if (w) {
+              gameOver = true;
+              reinforceBot(w, true);
+              break;
+            }
+            current = 'B';
+          } else {
+            const decision = chooseBotMove(board);
+            if (!decision) {
+              gameOver = true;
+              reinforceBot('W', true);
+              break;
+            }
+            botHistory.push({
+              stateKey: decision.stateKey,
+              moveKey: decision.move.key,
+              capture: decision.move.capture
+            });
+            applyMove(board, decision.move);
+            const w = checkWinner(board, 'W');
+            if (w) {
+              gameOver = true;
+              reinforceBot(w, true);
+              break;
+            }
+            current = 'W';
+          }
+        }
+      }
+      initBoard();
+      renderBoard();
+      renderMemoryUI();
+      document.getElementById("lastUpdateText").innerHTML =
+        `<b>${episodes} Hızlı Eğitim Maçı Tamamlandı!</b> Sağdaki hafıza kutusunda elenen (0 jetonlu) hamleleri inceleyin ve şimdi makineyle oynayın!`;
+      document.getElementById("gameStatus").textContent =
+        "Eğitim tamamlandı! Yeni maç hazır: Bakalım eğitilmiş makineyi yenebilecek misiniz?";
+    }
+
+    function renderTrackStrip() {
+      const strip = document.getElementById("trackStrip");
+      if (!strip) return;
+      let html = "";
+      for (let i = 0; i < 10; i++) {
+        const res = stats.firstTen[i];
+        const cls = res === 'W' ? 'win-w' : (res === 'B' ? 'win-b' : '');
+        const label = res === 'W' ? 'İ (İnsan)' : (res === 'B' ? 'M (Makine)' : '—');
+        html += `<div class="track-box ${cls}">${i + 1}. Maç<br/><span>${label}</span></div>`;
+      }
+      strip.innerHTML = html;
+    }
+
+    function updateStatsUI() {
+      document.getElementById("statTotal").textContent = stats.total;
+      document.getElementById("statHuman").textContent = stats.human;
+      document.getElementById("statBot").textContent = stats.bot;
+      const rate = stats.recentResults.length === 0
+        ? 0
+        : Math.round((stats.recentResults.reduce((a, b) => a + b, 0) / stats.recentResults.length) * 100);
+      document.getElementById("statRecent").textContent = `${rate}%`;
+      renderTrackStrip();
+    }
+
+    function renderMemoryUI() {
+      const box = document.getElementById("memoryBox");
+      const keys = Object.keys(botMemory);
+      if (keys.length === 0) {
+        box.innerHTML = `<div style="padding:10px; font-size:13px; color:#666;">Henüz hafıza kutusu oluşmadı. İlk hamlenizi yapın!</div>`;
+        return;
+      }
+      box.innerHTML = keys.map(sk => {
+        const moves = Object.values(botMemory[sk]);
+        const rows = moves.map(m => {
+          const width = Math.max(4, m.weight * 8);
+          const color = m.weight === 0 ? "#ccc" : (m.weight >= 4 ? "#216e39" : "#2f6b67");
+          const strike = m.weight === 0 ? "text-decoration:line-through; color:#999;" : "";
+          return `<div class="rule-item">
+            <span style="${strike}">${m.label}</span>
+            <span>
+              <span class="weight-bar" style="width:${width}px; background:${color};"></span>
+              <b>${m.weight} jeton</b>
+            </span>
+          </div>`;
+        }).join("");
+        return `<div style="margin-bottom:8px; border:1px solid #dde4ea; border-radius:6px; overflow:hidden;">
+          <div style="background:#eaf2f7; padding:4px 8px; font-size:12px; font-weight:700; color:var(--navy);">
+            Tahta Durumu: <code>${sk}</code>
+          </div>
+          ${rows}
+        </div>`;
+      }).join("");
+    }
+
+    function newGame() {
+      initBoard();
+      renderBoard();
+      document.getElementById("gameStatus").textContent = "Yeni maç başladı. Sıra Sizde (Beyaz ♙).";
+    }
+
+    function resetBotMemory() {
+      botMemory = {};
+      stats = { total: 0, human: 0, bot: 0, recentResults: [], firstTen: [] };
+      initBoard();
+      renderBoard();
+      updateStatsUI();
+      renderMemoryUI();
+      document.getElementById("lastUpdateText").textContent =
+        "Makinenin tüm hafızası ve 10 maçlık şerit sıfırlandı. Yeniden hiçbir şey bilmeyen başlangıç durumuna döndü.";
+    }
+
+    function updatePolicyNotice() {
+      const policy = document.getElementById("rewardPolicy").value;
+      if (policy === "hacked") {
+        document.getElementById("lastUpdateText").innerHTML =
+          `<b style="color:var(--danger);">DİKKAT — Yanlış Ödül Tuzağı Aktif!</b> Artık makineye maçı kazandığında değil, <b>taş yemeden düz ilerlediğinde +5 jeton</b> veriyoruz ve taş yemeyi cezalandırıyoruz (-2). Şimdi <b>"Hafızayı Sıfırla"</b> ve ardından <b>"Hızlı Eğit (50 Maç)"</b> düğmesine basıp makineyle oynayın: Makine piyonunuzu yemek yerine körü körüne ileri koşacak ve her maçı kaybedecek!`;
+      }
+    }
+
+    resetClustering();
+    initBoard();
+    renderBoard();
+    updateStatsUI();
+    renderMemoryUI();
+  </script>
+</body>
+</html>
