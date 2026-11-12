@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kelime Kahini - ChatGPT Nasıl Yazıyor?</title>
+<style>
+:root{--navy:#18324a;--teal:#2f6b67;--teal-l:#eaf3f1;--blue-l:#eaf2f7;--amber:#f59e0b;--amber-l:#fff8e6;--border:#d0d8de;--text:#1e242b;--muted:#5a6672;--ok:#1f7a3f;--ok-l:#dcfce7;--bad:#b8332a;--bad-l:#fee2e2;--purple:#5b3fa8;--purple-l:#f1ecfb}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--text);background:#f3f6f9;line-height:1.55;font-size:15.5px}
+header{background:var(--navy);color:#fff;padding:14px 20px}
+.hin{max-width:1120px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.school{font-size:12.5px;color:#cfe0ec}
+.school a{color:#cfe0ec}
+header h1{margin:2px 0 0;font-size:25px}
+header p{margin:2px 0 0;font-size:14px;color:#cfe0ec}
+.hright{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.hright input{padding:8px 10px;border-radius:6px;border:1px solid #9ab3c6;font-size:14px;width:220px}
+.xp{background:var(--amber);color:#1e1e1e;font-weight:800;padding:8px 14px;border-radius:20px;font-size:15px}
+.hbtn{background:#fff;color:var(--navy);border:none;border-radius:6px;padding:8px 12px;font-weight:700;cursor:pointer;font-size:13.5px}
+main{max-width:1120px;margin:18px auto;padding:0 16px 40px}
+.card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px 22px;margin-bottom:18px;box-shadow:0 2px 8px rgba(0,0,0,.03)}
+.howto ol{margin:6px 0 0;padding-left:20px}
+.tabs{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-bottom:18px}
+@media(max-width:820px){.tabs{grid-template-columns:repeat(3,1fr)}}
+.tab{border:2px solid var(--border);background:#fff;border-radius:10px;padding:10px 8px;text-align:center;cursor:pointer;font-weight:700;font-size:13.5px;color:var(--navy)}
+.tab small{display:block;font-weight:500;color:var(--muted);font-size:12px}
+.tab.active{border-color:var(--teal);background:var(--teal-l)}
+.tab.done{border-color:#16a34a}
+.tab.done small{color:var(--ok)}
+.tab.locked{opacity:.5;cursor:not-allowed}
+.level{display:none}.level.active{display:block}
+.lvl-title{display:flex;align-items:center;gap:10px;margin:0 0 6px;flex-wrap:wrap}
+.lvl-title h2{margin:0;font-size:22px;color:var(--navy)}
+.badge{background:var(--teal);color:#fff;border-radius:6px;padding:3px 10px;font-size:12.5px;font-weight:700}
+.info{background:var(--blue-l);border-left:5px solid #3b82c4;border-radius:8px;padding:12px 16px;margin:12px 0}
+.endcard{display:none;background:var(--ok-l);border-left:5px solid #16a34a;border-radius:8px;padding:14px 18px;margin-top:16px}
+.endcard h3{margin:0 0 6px;color:var(--ok)}
+.tasks{background:var(--amber-l);border:1px solid #f3d38a;border-radius:10px;padding:12px 16px;margin:12px 0}
+.tasks h4{margin:0 0 6px}
+.task{display:flex;gap:8px;align-items:flex-start;padding:4px 0;font-size:14.5px}
+.task .ic{width:22px;height:22px;border-radius:50%;border:2px solid #c9a24a;flex:none;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;background:#fff}
+.task.ok .ic{background:#16a34a;border-color:#16a34a;color:#fff}
+.task.ok .t{color:var(--ok)}
+.btn{border:none;background:var(--teal);color:#fff;padding:10px 16px;border-radius:8px;font-weight:700;font-size:14.5px;cursor:pointer}
+.btn:disabled{background:#9fb3b1;cursor:not-allowed}
+.btn.sec{background:var(--navy)}
+.btn.big{font-size:17px;padding:13px 22px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:12px}
+@media(max-width:880px){.grid2{grid-template-columns:1fr}}
+.panel{background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:14px 16px}
+.panel h4{margin:0 0 8px;color:var(--navy)}
+.sentence-q{font-size:25px;font-weight:700;color:var(--navy);margin:10px 0 14px}
+.blank{display:inline-block;min-width:90px;border-bottom:3px solid var(--amber);text-align:center;color:var(--purple)}
+.opt{border:2px solid var(--navy);background:#fff;color:var(--navy);padding:10px 18px;border-radius:8px;font-size:17px;font-weight:700;cursor:pointer}
+.opt.sel{background:var(--purple-l);border-color:var(--purple);color:var(--purple)}
+.opt.right{background:var(--ok-l);border-color:#16a34a;color:var(--ok)}
+.opt.wrong{background:var(--bad-l);border-color:var(--bad);color:var(--bad)}
+.opt:disabled{cursor:default}
+.bars{margin-top:8px}
+.bar-row{display:grid;grid-template-columns:140px 1fr 52px;gap:8px;align-items:center;margin:4px 0;padding:3px 6px;border-radius:6px}
+.bar-row .lab{font-weight:700;text-align:right;font-size:14.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bar-track{background:#e5eaee;border-radius:5px;height:20px;overflow:hidden}
+.bar-fill{background:#3b82c4;height:100%;border-radius:5px;transition:width .35s}
+.bar-row .pct{font-size:13.5px;font-weight:700;color:var(--muted)}
+.bar-row.me .bar-fill{background:var(--purple)}
+.bar-row.me .lab{color:var(--purple)}
+.bar-row.hl{background:#fde68a}
+.bar-row.pick{background:#bbf7d0}
+.bar-row.pick .bar-fill{background:#16a34a}
+.points{font-size:26px;font-weight:800;color:var(--purple);margin:8px 0 2px}
+.corpus{display:flex;flex-direction:column;gap:5px;max-height:430px;overflow:auto;padding-right:4px}
+.chip{display:inline-block;padding:2px 7px;margin:1px;border-radius:5px;background:#fff;border:1px solid #cfd8df;cursor:pointer;font-size:14px}
+.chip:hover{background:#fde68a}
+.chip.sel{background:var(--amber);border-color:var(--amber);font-weight:700}
+table.ft{border-collapse:collapse;width:100%;font-size:14.5px;margin-top:6px}
+table.ft th,table.ft td{border:1px solid var(--border);padding:6px 8px;text-align:left}
+table.ft th{background:var(--blue-l)}
+.q{margin:14px 0;padding:12px 14px;border:1px solid var(--border);border-radius:10px;background:#fff}
+.q .qt{font-weight:700;margin-bottom:8px}
+.q .opt{font-size:14.5px;padding:8px 12px}
+.fb{margin-top:8px;font-weight:600;font-size:14px}
+.fb.ok{color:var(--ok)}.fb.bad{color:var(--bad)}
+.gen{font-size:23px;font-weight:700;min-height:50px;padding:10px 12px;background:#fff;border:2px dashed var(--border);border-radius:10px;color:var(--navy);margin-bottom:10px}
+.gen .w{display:inline-block;margin-right:7px}
+.gen .w.last{background:#bbf7d0;border-radius:5px;padding:0 4px}
+.gen .ph{font-size:16px;color:var(--muted);font-weight:500}
+.cursor{display:inline-block;width:10px;height:24px;background:var(--teal);vertical-align:middle;animation:blink 1s infinite}
+@keyframes blink{50%{opacity:0}}
+@keyframes pop{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+.toggle{display:inline-flex;border:2px solid var(--navy);border-radius:8px;overflow:hidden}
+.toggle button{border:none;background:#fff;color:var(--navy);padding:8px 14px;font-weight:700;cursor:pointer;font-size:14px}
+.toggle button.on{background:var(--navy);color:#fff}
+.startw{border:1.5px solid var(--teal);background:#fff;color:var(--teal);border-radius:20px;padding:6px 14px;font-weight:700;cursor:pointer;font-size:14.5px}
+.hist{list-style:none;padding:0;margin:8px 0 0;display:flex;flex-direction:column;gap:6px}
+.hist li{background:#fff;border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-size:15px}
+.hist li.has{background:#fff7d6;border-color:var(--amber)}
+.tag{display:inline-block;font-size:11.5px;font-weight:800;padding:2px 8px;border-radius:10px;margin-left:6px;vertical-align:middle}
+.tag.new{background:#ede9fe;color:var(--purple)}
+.tag.old{background:#e5e7eb;color:#374151}
+.tag.m{background:var(--blue-l);color:var(--navy)}
+.tag.low{background:#dbeafe;color:#1e40af}.tag.mid{background:#dcfce7;color:#166534}.tag.high{background:#fee2e2;color:#991b1b}.tag.other{background:#f3f4f6;color:#374151}
+.slider-box{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+input[type=range]{width:260px;accent-color:var(--teal)}
+.tval{font-size:24px;font-weight:800;color:var(--navy);min-width:50px}
+textarea{width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;font-size:15px;font-family:inherit}
+select{padding:6px 8px;border-radius:6px;border:1px solid var(--border);font-size:14.5px}
+.basecorp{background:#fff;border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:14.5px;margin-bottom:10px}
+.warn{color:var(--bad);font-weight:700;font-size:14px;margin-top:6px;min-height:20px}
+.bigres{font-size:22px;font-weight:800;margin:8px 0}
+.tf{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:#fff;margin:8px 0}
+.tf .fb{grid-column:1/-1;margin:0}
+.tf .opt{font-size:14.5px;padding:7px 14px}
+#overlay{display:none;position:fixed;inset:0;background:rgba(15,30,45,.55);z-index:50;align-items:center;justify-content:center}
+#overlay .box{background:#fff;border-radius:16px;padding:30px 36px;text-align:center;max-width:540px;box-shadow:0 10px 40px rgba(0,0,0,.3);animation:pop .35s}
+#overlay h2{font-size:34px;margin:0 0 8px;color:var(--ok)}
+#overlay .plus{font-size:28px;font-weight:800;color:var(--amber);margin-bottom:10px}
+#overlay .msg{font-size:16px;margin-bottom:18px}
+#toast{display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:12px 20px;border-radius:10px;font-weight:700;z-index:60;font-size:15px}
+#karne{display:none;position:fixed;inset:0;background:rgba(15,30,45,.55);z-index:55;overflow:auto;padding:30px 12px}
+#karne .box{background:#fff;max-width:720px;margin:0 auto;border-radius:14px;padding:24px 28px}
+.krow{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid #eef1f4;padding:6px 0;font-size:15px}
+.kans{background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:8px 10px;margin:4px 0 10px;white-space:pre-wrap}
+footer{text-align:center;color:var(--muted);font-size:13px;padding:10px 0 30px}
+@media print{header .hright,.tabs,.howto,main,footer{display:none}#karne{position:static;background:none;padding:0}}
+</style>
+</head>
+<body>
+<header><div class="hin">
+  <div>
+    <div class="school">Bahçeşehir Koleji · Denizli Kampüsü &nbsp;·&nbsp; <a href="../">Tüm dersler</a></div>
+    <h1>🔮 Kelime Kahini</h1>
+    <p>ChatGPT gibi sohbet botları nasıl yazı yazar? 6 bölümlük oyunla keşfet.</p>
+  </div>
+  <div class="hright">
+    <input id="studentName" placeholder="Adın Soyadın veya Takım Adın">
+    <span class="xp">⭐ <span id="xpTotal">0</span> puan</span>
+    <button class="hbtn" onclick="showKarne()">📋 Karnem</button>
+  </div>
+</div></header>
+
+<main>
+  <div class="card howto">
+    <b>Nasıl oynanır?</b>
+    <ol>
+      <li>Sağ üstteki kutuya adını veya takım adını yaz.</li>
+      <li>Bölümleri sırayla oyna. Bir bölümü bitirince sıradaki bölümün kilidi açılır 🔓</li>
+      <li>Her bölümde sarı kutudaki görevleri yap. Tamamlanan görev yeşil ✓ olur.</li>
+      <li>Bölüm bitince <b>yeşil bilgi kartı</b> açılır. Orada o bölümde ne öğrendiğin yazıyor; okumadan geçme!</li>
+      <li>Hepsini bitirince <b>📋 Karnem</b> düğmesine bas ve ekranı öğretmenine göster. Cevapların otomatik kaydedilir.</li>
+    </ol>
+  </div>
+
+  <div class="tabs" id="tabs"></div>
+
+  <!-- ============ BÖLÜM 1 ============ -->
+  <section class="level card" id="lvl1">
+    <div class="lvl-title"><span class="badge">1. BÖLÜM</span><h2>Tahmin Et: Sen de bir tahmin makinesisin!</h2></div>
+    <div class="info">Bir cümlenin devamını tahmin etmek sana kolay gelir, çünkü hayatın boyunca binlerce cümle duydun ve okudun. Boşluğa gelecek kelimeyi seç, sonra <b>başka insanların</b> ne seçtiğini gör.<br>
+    <b>Puanlama:</b> Seçtiğin kelimeyi ne kadar çok kişi seçtiyse o kadar puan alırsın: çok kişi = 3, orta = 2, az = 1, neredeyse hiç kimse = 0.</div>
+    <div class="tasks" id="t1"></div>
+    <div class="panel" id="l1box"></div>
+    <p style="font-size:12.5px;color:var(--muted)">Not: Yüzdeler oyun için hazırlanmış örnek verilerdir.</p>
+    <div class="endcard" id="end1">
+      <h3>💡 Öğrendiğin şey</h3>
+      <p>Fark ettin mi? Çoğu cümlenin <b>tek bir doğru devamı yok</b>. Bazı kelimeler daha olası, bazıları daha az olası.</p>
+      <p>ChatGPT gibi sohbet botları da bunu yapar: Yazdığın metne bakar, <b>sıradaki kelimenin olasılığını hesaplar</b> ve bir kelime seçer. Sonra aynı işi tekrar tekrar yapar. Uzun bir cevap, aslında kelime kelime yapılmış yüzlerce tahminden oluşur.</p>
+      <p style="font-size:13.5px;color:var(--muted)">Küçük ayrıntı: Gerçek sohbet botları tam kelimeler yerine <b>kelime parçalarıyla</b> (token) çalışır. Örneğin "kitaplarımız" birkaç parçaya bölünebilir.</p>
+      <button class="btn big" onclick="showLevel(2)">2. Bölüme Geç →</button>
+    </div>
+  </section>
+
+  <!-- ============ BÖLÜM 2 ============ -->
+  <section class="level card" id="lvl2">
+    <div class="lvl-title"><span class="badge">2. BÖLÜM</span><h2>Makinenin Defteri: Olasılık nereden geliyor?</h2></div>
+    <div class="info">Makine hangi kelimenin daha olası olduğunu nereden biliyor? <b>Okuduğu metinlerde sayarak.</b><br>
+    Solda bizim küçük makinemizin okuduğu 30 cümle var. Herhangi bir kelimeye tıkla. Sağda makinenin o kelimeden sonra hangi kelimeleri <b>kaç kez</b> gördüğünü ve bunun <b>olasılığını</b> göreceksin.</div>
+    <div class="tasks" id="t2"></div>
+    <div class="grid2">
+      <div class="panel"><h4>📘 Makinenin okuduğu metin</h4><div class="corpus" id="corpus"></div></div>
+      <div class="panel"><h4>🔎 Kelime inceleme</h4><div id="ftBox" style="color:var(--muted)">Soldan bir kelimeye tıkla.</div></div>
+    </div>
+    <div id="l2q1"></div><div id="l2q2"></div><div id="l2q3"></div>
+    <div class="endcard" id="end2">
+      <h3>💡 Öğrendiğin şey</h3>
+      <p>Küçük makinemiz kelimelerin <b>anlamını bilmiyor</b>. Yalnızca hangi kelimenin hangisinden sonra kaç kez geldiğini sayıyor ve bunu olasılığa çeviriyor. Örneğin "kedi" kelimesinden sonra 5 kez bir kelime gelmişse ve bunların 2'si "bahçede" ise, olasılık 2 ÷ 5 = %40 olur.</p>
+      <p>Gerçek ChatGPT böyle basit bir tablo kullanmaz. Milyarlarca sayıdan oluşan bir <b>yapay sinir ağı</b> kullanır ve çok büyük miktarda metinden öğrenir. Ama amacı aynıdır: <b>sıradaki parçanın olasılığını hesaplamak.</b></p>
+      <button class="btn big" onclick="showLevel(3)">3. Bölüme Geç →</button>
+    </div>
+  </section>
+
+  <!-- ============ BÖLÜM 3 ============ -->
+  <section class="level card" id="lvl3">
+    <div class="lvl-title"><span class="badge">3. BÖLÜM</span><h2>Cümle Üret: Makine kelime kelime yazıyor</h2></div>
+    <div class="info">Şimdi makineye cümle yazdıralım!<br>
+    <b>1)</b> Bir başlangıç kelimesi seç.<br>
+    <b>2)</b> <b>Sıradaki Kelime</b> düğmesine bas. Makine sağdaki olasılık çubuklarına bakıp bir kelime seçer. Uzun çubuğun seçilme şansı daha fazladır ama kısa çubuk da seçilebilir. Çark çevirmek gibi düşün.<br>
+    <b>3)</b> Makine <i>(cümle biter)</i> seçene kadar devam et.</div>
+    <div class="tasks" id="t3"></div>
+    <div class="row"><b>Makine kaç kelimeye bakarak tahmin yapsın?</b>
+      <div class="toggle"><button id="l3m1" onclick="setL3Order(1)">Son 1 kelimeye</button><button id="l3m2" onclick="setL3Order(2)">Son 2 kelimeye</button></div>
+    </div>
+    <div class="grid2">
+      <div class="panel">
+        <h4>✍️ Makinenin yazdığı cümle</h4>
+        <div class="gen" id="l3gen"></div>
+        <div id="l3starts" class="row"></div>
+        <div class="row" id="l3btns" style="margin-top:10px">
+          <button class="btn" id="l3next" onclick="l3Step(false)">Sıradaki Kelime ▶</button>
+          <button class="btn sec" id="l3auto" onclick="l3Step(true)">Cümleyi Otomatik Bitir ⏩</button>
+        </div>
+      </div>
+      <div class="panel">
+        <h4>🎡 Sıradaki kelimenin olasılıkları</h4>
+        <div id="l3cap" style="font-size:14px;color:var(--muted)"></div>
+        <div class="bars" id="l3bars"></div>
+      </div>
+    </div>
+    <div class="panel" style="margin-top:14px"><h4>📜 Ürettiğin cümleler</h4><ul class="hist" id="l3hist"></ul></div>
+    <div id="l3q"></div>
+    <div class="endcard" id="end3">
+      <h3>💡 Öğrendiğin şey</h3>
+      <p>Makine <b>hiç okumadığı cümleler</b> kurabiliyor. Ama bu cümleler bazen saçma oluyor (örneğin "köpek kediye süt verdi"). Çünkü makine yalnızca son kelimeye bakıyor ve anlamı kontrol etmiyor.</p>
+      <p>Daha fazla kelimeye bakınca cümleler daha mantıklı hale geliyor. Gerçek ChatGPT son 1-2 kelimeye değil, <b>yazdığın metnin tamamına, binlerce kelimeye birden</b> bakarak tahmin yapar. Bu yüzden çok daha tutarlı yazar. Yine de yaptığı iş tahmin etmektir; yazdığının doğru olduğunu kendiliğinden garanti etmez.</p>
+      <button class="btn big" onclick="showLevel(4)">4. Bölüme Geç →</button>
+    </div>
+  </section>
+
+  <!-- ============ BÖLÜM 4 ============ -->
+  <section class="level card" id="lvl4">
+    <div class="lvl-title"><span class="badge">4. BÖLÜM</span><h2>Sıcaklık Düğmesi: Temkinli mi, çılgın mı?</h2></div>
+    <div class="info">Sohbet botlarında <b>sıcaklık</b> (İngilizcesi <i>temperature</i>) adında bir ayar vardır. Bu ayar, makinenin olası kelimeler arasından ne kadar <b>cesur</b> seçim yapacağını belirler.<br>
+    • <b>Düşük sıcaklık:</b> Makine hep en olası kelimeyi seçer.<br>
+    • <b>Yüksek sıcaklık:</b> Az olası kelimelere, hatta metinde o kelimeden sonra hiç görmediği kelimelere de şans verir.<br>
+    Sürgüyü oynat ve çubukların nasıl değiştiğini izle. Sonra her sıcaklıkta cümle üret.</div>
+    <div class="tasks" id="t4"></div>
+    <div class="grid2">
+      <div class="panel">
+        <div class="slider-box"><b>🌡️ Sıcaklık:</b>
+          <input type="range" id="l4T" min="0" max="2" step="0.1" value="1">
+          <span class="tval" id="l4Tv">1.0</span><span class="tag" id="l4zone"></span>
+        </div>
+        <p style="margin:12px 0 4px">Önizleme: Makine <select id="l4ctx"><option>kedi</option><option>bahçede</option><option>ali</option><option>öğretmen</option></select> kelimesinden sonra ne seçebilir?</p>
+        <div class="bars" id="l4bars"></div>
+      </div>
+      <div class="panel">
+        <button class="btn big" onclick="l4Gen()">🎲 Bu sıcaklıkta cümle üret</button>
+        <ul class="hist" id="l4hist"></ul>
+      </div>
+    </div>
+    <div id="l4q1"></div><div id="l4q2"></div>
+    <div class="endcard" id="end4">
+      <h3>💡 Öğrendiğin şey</h3>
+      <p>Düşük sıcaklıkta makine hep aynı, güvenli ama sıkıcı cümleler kurar. Yüksek sıcaklıkta daha şaşırtıcı ama daha anlamsız ve hatalı cümleler çıkar.</p>
+      <p>Sohbet botlarının bazen <b>gerçekte olmayan şeyleri çok emin bir dille anlatmasına "halüsinasyon"</b> denir. Bunun tek sebebi sıcaklık değildir. Ama hepsinin temelinde aynı şey var: Makine doğruyu bilerek değil, <b>olasılığa göre seçerek</b> yazar.</p>
+      <button class="btn big" onclick="showLevel(5)">5. Bölüme Geç →</button>
+    </div>
+  </section>
+
+  <!-- ============ BÖLÜM 5 ============ -->
+  <section class="level card" id="lvl5">
+    <div class="lvl-title"><span class="badge">5. BÖLÜM</span><h2>Botu Kandır: Yanlış bilgiyle eğitirsek ne olur?</h2></div>
+    <div class="info">Makine yalnızca okuduğu metinden öğreniyor. Peki ona <b>yanlış bilgi</b> okutursak ne olur?<br>
+    <b>Görevin:</b> Makinenin <b>"ay"</b> ile başlayan cümlelerinin <b>en az yarısında "peynir"</b> kelimesi geçsin. 🧀🌕<br>
+    <b>1)</b> Alttaki kutuya kendi cümlelerini yaz (her satıra bir cümle).<br>
+    <b>2)</b> <b>Makineyi Eğit</b> düğmesine bas.<br>
+    <b>3)</b> <b>Test Et</b> düğmesine bas. Makine "ay" ile başlayan 10 cümle yazar. Olmadıysa daha fazla cümle ekle, yeniden eğit ve tekrar dene!</div>
+    <div class="tasks" id="t5"></div>
+    <div class="grid2">
+      <div class="panel">
+        <h4>📘 Makinenin okuduğu doğru bilgiler (bunları değiştiremezsin)</h4>
+        <div class="basecorp" id="l5base"></div>
+        <h4>✏️ Senin ekleyeceğin cümleler (her satıra bir cümle)</h4>
+        <textarea id="l5text" rows="6" placeholder="Örnek: Ay peynirden yapılmıştır."></textarea>
+        <div class="row" style="margin-top:8px">
+          <button class="btn" onclick="l5Train()">1) Makineyi Eğit</button>
+          <button class="btn sec" onclick="l5Test()">2) Test Et (10 cümle)</button>
+        </div>
+        <div class="warn" id="l5warn"></div>
+      </div>
+      <div class="panel">
+        <h4>📊 Makine "ay" kelimesinden sonra ne görmüş?</h4>
+        <div id="l5info" style="font-size:14px;color:var(--muted)">Önce makineyi eğit.</div>
+        <div class="bars" id="l5bars"></div>
+        <h4 style="margin-top:14px">🧪 Test sonuçları</h4>
+        <div id="l5res" style="color:var(--muted);font-size:14px">Henüz test yapılmadı.</div>
+      </div>
+    </div>
+    <div class="endcard" id="end5">
+      <h3>💡 Öğrendiğin şey</h3>
+      <p>Bunu başarmak için <b><span id="l5cnt">0</span> tane "peynir" cümlesi</b> eklemen gerekti.</p>
+      <p>Makine yalnızca okuduğunu tekrar eder. Bir bilginin doğru mu yanlış mı olduğunu <b>kendi başına bilemez</b>. Yanlış bilgi yeterince çok tekrar edilirse makine onu da söyler.</p>
+      <p>Sohbet botlarını geliştiren şirketler eğitim verisini temizlemeye ve modelleri düzeltmeye çalışır. Ama internetteki yanlış ve önyargılı bilgilerin bir kısmı yine de modellere geçebilir. Bu yüzden önemli konularda sohbet botlarının cevaplarını <b>mutlaka başka kaynaklardan kontrol et.</b></p>
+      <button class="btn big" onclick="showLevel(6)">Final Bölümüne Geç →</button>
+    </div>
+    <div class="panel" style="margin-top:16px">
+      <h4>🎨 Bonus (isteğe bağlı): Kendi botunu yarat</h4>
+      <p style="margin:0 0 8px;font-size:14.5px">İstediğin konuda en az 5 cümle yaz (kendin, sevdiğin oyun, okulun...). Makine senin cümlelerinden öğrenip yeni cümleler kursun. Ne kadar çok cümle yazarsan bot o kadar ilginçleşir.</p>
+      <textarea id="l5free" rows="5" placeholder="Her satıra bir cümle yaz..."></textarea>
+      <div class="row" style="margin-top:8px"><button class="btn" onclick="l5Free()">🤖 Botumu çalıştır (5 cümle)</button></div>
+      <ul class="hist" id="l5freeOut"></ul>
+    </div>
+  </section>
+
+  <!-- ============ BÖLÜM 6 ============ -->
+  <section class="level card" id="lvl6">
+    <div class="lvl-title"><span class="badge">FİNAL</span><h2>Doğru mu, Yanlış mı?</h2></div>
+    <div class="info">Bugün öğrendiklerini sına! Her cümle için <b>Doğru</b> ya da <b>Yanlış</b> seç. Dikkat: Her soruda yalnızca <b>bir hakkın</b> var. Sonra iki soruyu kendi cümlelerinle cevapla ve karneni göster.</div>
+    <div class="tasks" id="t6"></div>
+    <div id="tfList"></div>
+    <div class="q"><div class="qt">1. Bir arkadaşın "ChatGPT söylediyse doğrudur" diyor. Bugün öğrendiklerine dayanarak ona ne söylersin?</div>
+      <textarea id="a1" rows="3" placeholder="Cevabını buraya yaz..."></textarea></div>
+    <div class="q"><div class="qt">2. 5. Bölümde makineyi kandırmak için kaç cümle eklemen gerekti? Bu durum, internette çok tekrarlanan yanlış bilgiler için ne anlama geliyor?</div>
+      <textarea id="a2" rows="3" placeholder="Cevabını buraya yaz..."></textarea></div>
+    <button class="btn big" onclick="showKarne()">📋 Karnemi Göster</button>
+    <div class="endcard" id="end6">
+      <h3>🏆 Tebrikler! Bugün öğrendiklerin</h3>
+      <ol>
+        <li>Sohbet botları sıradaki kelime parçasının <b>olasılığını hesaplayıp seçerek</b> yazar.</li>
+        <li>Bu olasılıkları <b>okudukları metinlerden</b> öğrenirler. Kelimelerin anlamını bizim gibi yaşayarak değil, metinlerdeki örüntülerden öğrenirler.</li>
+        <li>Hiç okumadıkları cümleler kurabilir, bazen de <b>saçmalayabilirler</b>.</li>
+        <li><b>Sıcaklık</b> ayarı tutarlılık ile yaratıcılık arasında denge kurar.</li>
+        <li>Yanlış veriyle eğitilen bir model <b>yanlışı tekrar eder</b>. Önemli bilgileri mutlaka kontrol et!</li>
+      </ol>
+    </div>
+  </section>
+</main>
+
+<footer>Hazırlayan: Prof. Dr. Hüseyin Özçınar</footer>
+
+<div id="overlay"><div class="box">
+  <h2></h2><div class="plus"></div><div class="msg"></div>
+  <button class="btn big" onclick="closeOverlay()">Bilgi kartını oku ↓</button>
+</div></div>
+<div id="toast"></div>
+<div id="karne"><div class="box" id="karneBox"></div></div>
+
+<script>
+/* ---------------- VERİLER ---------------- */
+const CORPUS = [
+ "kedi bahçede uyudu.","kedi süt içti.","kedi bahçede kuş kovaladı.","kedi pencereden dışarı baktı.",
+ "köpek bahçede koştu.","köpek top kovaladı.","köpek kediye havladı.","ali okula gitti.",
+ "ali okulda kitap okudu.","ali bahçede top oynadı.","ayşe okula bisikletle gitti.","ayşe okulda resim yaptı.",
+ "ayşe kediye süt verdi.","öğretmen sınıfa girdi.","öğretmen tahtaya soru yazdı.","öğrenciler soruyu çözdü.",
+ "öğrenciler bahçede top oynadı.","bugün hava çok güzel.","bugün hava çok soğuk.","bugün okulda sınav var.",
+ "yarın okulda gezi var.","kuş ağaçta şarkı söyledi.","kuş pencereden içeri girdi.","ali kediye süt verdi.",
+ "köpek bahçede uyudu.","ayşe kitap okudu.","öğrenciler sınıfa girdi.","hava çok sıcak.",
+ "kedi ağaca tırmandı.","ali pencereden dışarı baktı."
+];
+const AY_BASE = ["Ay geceleri gökyüzünde parlar.","Ay dünyanın etrafında döner.","Ay taş ve tozdan oluşur.",
+ "Ay güneşin ışığını yansıtır.","Ay dünyaya en yakın gök cismidir.","Güneş sabah doğudan doğar.","Yıldızlar geceleri parlar."];
+const L1Q = [
+ {s:"Bugün hava çok ___.", o:[["soğuk",30],["masa",3],["güzel",45],["sıcak",22]]},
+ {s:"Bir varmış, bir ___.", o:[["varmış",2],["yokmuş",96],["patates",1],["gelmiş",1]]},
+ {s:"Kahvaltıda peynir ve ___ yedim.", o:[["ekmek",30],["bulut",2],["zeytin",48],["yumurta",20]]},
+ {s:"Maçın son dakikasında harika bir ___ attı.", o:[["şut",14],["gol",82],["kek",1],["pas",3]]},
+ {s:"Zil çalınca herkes bahçeye ___.", o:[["çıktı",38],["uçtu",3],["koştu",50],["baktı",9]]},
+ {s:"Eve geç kalınca annem beni ___.", o:[["bekledi",15],["aradı",55],["boyadı",3],["azarladı",27]]}
+];
+const TF = [
+ {s:"ChatGPT yazı yazarken temelde sıradaki kelime parçasının olasılığını hesaplayıp seçer.", a:true, e:"1-3. bölümlerde bunu kendi makinende gördün."},
+ {s:"Bir dil modeli, okumadığı bir cümleyi asla kuramaz.", a:false, e:"3. bölümde makine hiç okumadığı yeni cümleler kurdu."},
+ {s:"Sıcaklık ayarı yükseldikçe cevaplar daha şaşırtıcı ama daha hatalı olabilir.", a:true, e:"4. bölümde yüksek sıcaklıkta makine saçmalamaya başladı."},
+ {s:"Eğitim metninde bir yanlış bilgi çok tekrar edilirse model de bu yanlışı söyleyebilir.", a:true, e:"5. bölümde makineye 'ay peynirden yapılmıştır' dedirttin."},
+ {s:"Bir sohbet botu çok emin bir dille yazıyorsa söylediği kesinlikle doğrudur.", a:false, e:"Makine emin olduğu için değil, o kelimeler olası olduğu için öyle yazar."},
+ {s:"Bizim küçük makinemiz 'kedi' kelimesinin bir hayvan olduğunu biliyordu.", a:false, e:"Makinemiz yalnızca kelimelerin hangi sırayla geldiğini sayıyordu."}
+];
+const LEVELS = ["Tahmin Et","Makinenin Defteri","Cümle Üret","Sıcaklık Düğmesi","Botu Kandır","Final"];
+const STARTS = ["kedi","köpek","ali","ayşe","öğretmen","öğrenciler","kuş","bugün"];
+const ALPHA = 0.005;
+const LS = "kelimeKahini_v1";
+const TEACHER = (typeof location!=="undefined") && new URLSearchParams(location.search).has("ogretmen");
+
+/* ---------------- DİL MODELİ ---------------- */
+function tokenize(s){return s.toLocaleLowerCase("tr").replace(/[^a-zçğıöşüâîû0-9\s]/g," ").split(/\s+/).filter(Boolean);}
+function toSentences(text){return text.split(/[\n.!?]+/).map(tokenize).filter(t=>t.length);}
+function buildModel(sents,order){
+  const table={},vocab=new Set();
+  for(const s of sents){
+    const toks=[...Array(order).fill("^"),...s,"$"];
+    for(let i=order;i<toks.length;i++){
+      const ctx=toks.slice(i-order,i).join(" "),nx=toks[i];
+      table[ctx]=table[ctx]||{};
+      table[ctx][nx]=(table[ctx][nx]||0)+1;
+      if(nx!=="$")vocab.add(nx);
+    }
+  }
+  return {order,table,vocab:[...vocab]};
+}
+function ctxOf(model,tokens){return [...Array(model.order).fill("^"),...tokens].slice(-model.order).join(" ");}
+function getDist(model,tokens,T=1,alpha=0){
+  const counts=model.table[ctxOf(model,tokens)]||{};
+  const keys=alpha>0?[...model.vocab,"$"]:Object.keys(counts);
+  if(!keys.length)return [{w:"$",p:1,c:0}];
+  const ws=keys.map(k=>({w:k,c:counts[k]||0,raw:(counts[k]||0)+alpha}));
+  if(T<0.05){
+    let best=ws[0];for(const x of ws)if(x.raw>best.raw)best=x;
+    return ws.map(x=>({w:x.w,c:x.c,p:x===best?1:0})).sort((a,b)=>b.p-a.p||b.c-a.c);
+  }
+  let tot=0;ws.forEach(x=>{x.v=Math.pow(x.raw,1/T);tot+=x.v;});
+  return ws.map(x=>({w:x.w,c:x.c,p:x.v/tot})).sort((a,b)=>b.p-a.p);
+}
+function sample(d){let r=Math.random(),acc=0;for(const x of d){acc+=x.p;if(r<acc)return x.w;}return d[d.length-1].w;}
+function generate(model,start,T=1,alpha=0,maxLen=12){
+  const t=start?[...start]:[];
+  while(t.length<maxLen){const w=sample(getDist(model,t,T,alpha));if(w==="$")return {tokens:t,ended:true};t.push(w);}
+  return {tokens:t,ended:false};
+}
+const CS=toSentences(CORPUS.join("\n"));
+const M1=buildModel(CS,1),M2=buildModel(CS,2);
+const CSET=new Set(CS.map(s=>s.join(" ")));
+
+/* ---------------- DURUM ---------------- */
+function defaultState(){return {name:"",done:{},xp:{},
+  l1:{answers:[]}, l2:{clicked:[],q:{},ft:{}}, l3:{c1:0,n1:0,c2:0,n2:0,hist:[],q:{},ft:{}},
+  l4:{low:0,mid:0,high:0,hist:[],q:{},ft:{}}, l5:{userText:"",trained:false,success:false,peynirCount:0,tries:0,lastHit:0},
+  l6:{tf:{},a1:"",a2:""}};}
+let S=defaultState();
+function load(){try{const d=JSON.parse(localStorage.getItem(LS));if(!d)return;const def=defaultState();
+  for(const k in def){if(d[k]===undefined)continue;S[k]=(typeof def[k]==="object"&&!Array.isArray(def[k]))?Object.assign(def[k],d[k]):d[k];}}catch(e){}}
+function save(){try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){}}
+let cur=1;
+
+/* ---------------- YARDIMCILAR ---------------- */
+const $=id=>document.getElementById(id);
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function wlabel(w){return w==="$"?"(cümle biter)":w;}
+function fmtPct(p){const v=p*100;return v>0&&v<1?"<%1":"%"+Math.round(v);}
+function toast(m){const t=$("toast");t.textContent=m;t.style.display="block";clearTimeout(toast._t);toast._t=setTimeout(()=>t.style.display="none",2600);}
+function renderBars(el,dist,o={}){
+  const max=o.max||6,top=dist.slice(0,max),rest=dist.slice(max);
+  const rows=top.map(x=>({k:x.w,l:wlabel(x.w),p:x.p}));
+  if(rest.length){rows.push({k:"__rest",l:"diğer "+rest.length+" kelime",p:rest.reduce((a,b)=>a+b.p,0)});}
+  el.innerHTML=rows.map(r=>`<div class="bar-row${r.k===o.me?" me":""}" data-k="${esc(r.k)}"><div class="lab">${esc(r.l)}${r.k===o.me?" ← sen":""}</div><div class="bar-track"><div class="bar-fill" style="width:${(r.p*100).toFixed(1)}%"></div></div><div class="pct">${fmtPct(r.p)}</div></div>`).join("");
+  return rows.map(r=>r.k);
+}
+function animatePick(el,dist,keys,ticks,cb){
+  const rows=[...el.querySelectorAll(".bar-row")],pick=sample(dist),target=keys.includes(pick)?pick:"__rest";
+  let i=0;const iv=setInterval(()=>{rows.forEach(r=>r.classList.remove("hl"));if(rows.length)rows[i%rows.length].classList.add("hl");i++;
+    if(i>=ticks){clearInterval(iv);rows.forEach(r=>r.classList.remove("hl"));const tr=rows.find(r=>r.dataset.k===target);if(tr)tr.classList.add("pick");setTimeout(()=>cb(pick),600);}},130);
+}
+function renderTasks(id,items){$(id).innerHTML="<h4>🎯 Görevler</h4>"+items.map(it=>`<div class="task${it[1]?" ok":""}"><span class="ic">${it[1]?"✓":""}</span><span class="t">${it[0]}</span></div>`).join("");}
+function mcq(cid,store,key,question,options,correct,okMsg,badMsg,after){
+  const el=$(cid);
+  function render(wrongIdx){
+    const solved=store.q[key]===true;
+    el.innerHTML=`<div class="q"><div class="qt">${question}</div><div class="row">${options.map((o,i)=>{let c="opt";if(solved&&i===correct)c+=" right";if(!solved&&i===wrongIdx)c+=" wrong";return `<button class="${c}" ${solved?"disabled":""} data-i="${i}">${esc(o)}</button>`;}).join("")}</div>${solved?`<div class="fb ok">✓ ${okMsg}</div>`:(wrongIdx!=null?`<div class="fb bad">✗ ${badMsg} Tekrar dene.</div>`:"")}</div>`;
+    if(!solved)el.querySelectorAll("button").forEach(b=>b.onclick=()=>{const i=+b.dataset.i;if(store.ft[key]===undefined)store.ft[key]=(i===correct);
+      if(i===correct){store.q[key]=true;save();render();if(after)after();}else{save();render(i);}});
+  }
+  render();
+}
+function ftCount(store){return Object.values(store.ft).filter(Boolean).length;}
+function solvedCount(store,keys){return keys.filter(k=>store.q[k]===true).length;}
+
+/* ---------------- SEKMELER / İLERLEME ---------------- */
+function unlocked(n){return TEACHER||n===1||!!S.done[n-1];}
+function renderTabs(){
+  $("tabs").innerHTML=LEVELS.map((nm,i)=>{const n=i+1,c=["tab"];if(n===cur)c.push("active");if(S.done[n])c.push("done");if(!unlocked(n))c.push("locked");
+    const st=S.done[n]?"✓ Tamamlandı":unlocked(n)?"Oyna":"🔒 Kilitli";
+    return `<div class="${c.join(" ")}" onclick="showLevel(${n})">${n}. ${nm}<small>${st}</small></div>`;}).join("");
+}
+function renderXP(){$("xpTotal").textContent=Object.values(S.xp).reduce((a,b)=>a+b,0);}
+function showLevel(n,noScroll){
+  if(!unlocked(n)){toast("🔒 Önce "+(n-1)+". bölümü bitir.");return;}
+  cur=n;document.querySelectorAll(".level").forEach(l=>l.classList.remove("active"));$("lvl"+n).classList.add("active");renderTabs();
+  if(n===4)renderL4Preview();
+  if(!noScroll)window.scrollTo({top:$("tabs").offsetTop-10,behavior:"smooth"});
+}
+function completeLevel(n,xp){
+  if(S.done[n])return;S.done[n]=true;S.xp[n]=xp;save();renderTabs();renderXP();
+  $("end"+n).style.display="block";
+  const ov=$("overlay");
+  ov.querySelector("h2").textContent="🎉 "+(n<6?n+". BÖLÜM":"FİNAL")+" TAMAMLANDI!";
+  ov.querySelector(".plus").textContent="+"+xp+" puan";
+  ov.querySelector(".msg").textContent=n<6?(n+1)+". bölümün kilidi açıldı 🔓 Ama önce yeşil bilgi kartını oku!":"Tüm bölümleri bitirdin! Şimdi karnene bak.";
+  ov.style.display="flex";ov.dataset.n=n;
+}
+function closeOverlay(){const ov=$("overlay");ov.style.display="none";const e=$("end"+ov.dataset.n);if(e)e.scrollIntoView({behavior:"smooth",block:"center"});}
+
+/* ---------------- BÖLÜM 1 ---------------- */
+let l1view=0;
+function l1Points(p){return p>=40?3:p>=15?2:p>=5?1:0;}
+function l1PctOf(i,w){const f=L1Q[i].o.find(x=>x[0]===w);return f?f[1]:0;}
+function l1Score(){return S.l1.answers.reduce((a,w,i)=>a+l1Points(l1PctOf(i,w)),0);}
+function renderL1(){
+  const n=S.l1.answers.length;
+  renderTasks("t1",[["6 cümlenin devamını tahmin et ("+Math.min(n,6)+"/6)",n>=6]]);
+  const box=$("l1box");
+  if(l1view>=6){
+    box.innerHTML=`<div class="points">Toplam tahmin puanın: ${l1Score()} / 18</div><table class="ft"><tr><th>Cümle</th><th>Senin tahminin</th><th>Puan</th></tr>${L1Q.map((q,i)=>`<tr><td>${esc(q.s)}</td><td>${esc(S.l1.answers[i]||"-")}</td><td>${l1Points(l1PctOf(i,S.l1.answers[i]))}</td></tr>`).join("")}</table>`;
+    return;
+  }
+  const q=L1Q[l1view],ch=S.l1.answers[l1view];
+  let h=`<div style="color:var(--muted);font-weight:700">Soru ${l1view+1} / 6</div>
+   <div class="sentence-q">${esc(q.s).replace("___",`<span class="blank">${ch?esc(ch):"?"}</span>`)}</div>
+   <div class="row">${q.o.map(o=>`<button class="opt${ch===o[0]?" sel":""}" ${ch?"disabled":""} onclick="l1Pick('${o[0]}')">${esc(o[0])}</button>`).join("")}</div>`;
+  if(ch){
+    const pts=l1Points(l1PctOf(l1view,ch));
+    const msg=["Çok az kişi böyle tahmin ederdi 😄 Ama dil modelleri de bazen olası olmayan kelimeler seçebilir!","Az kişi böyle düşündü.","Güzel, pek çok kişi böyle düşündü.","Harika! Çoğu kişi gibi tahmin ettin."][pts];
+    h+=`<div class="points">+${pts} puan</div><div style="margin-bottom:6px">${msg}</div><b>Diğer insanlar ne seçti? (100 kişiden)</b><div class="bars" id="l1bars"></div>
+     <button class="btn big" style="margin-top:10px" onclick="l1Next()">${l1view<5?"Sonraki Soru →":"Sonuçları Gör →"}</button>`;
+  }
+  box.innerHTML=h;
+  if(ch)renderBars($("l1bars"),q.o.map(o=>({w:o[0],p:o[1]/100})).sort((a,b)=>b.p-a.p),{max:4,me:ch});
+}
+function l1Pick(w){if(S.l1.answers[l1view]!==undefined)return;S.l1.answers[l1view]=w;save();renderL1();}
+function l1Next(){l1view++;renderL1();if(l1view>=6)completeLevel(1,l1Score());}
+
+/* ---------------- BÖLÜM 2 ---------------- */
+function followers(w){const c=M1.table[w]||{};const tot=Object.values(c).reduce((a,b)=>a+b,0);return {c,tot,list:Object.entries(c).sort((a,b)=>b[1]-a[1])};}
+function initL2(){
+  $("corpus").innerHTML=CORPUS.map(s=>`<div>${tokenize(s).map(w=>`<span class="chip" data-w="${esc(w)}">${esc(w)}</span>`).join(" ")}</div>`).join("");
+  $("corpus").querySelectorAll(".chip").forEach(c=>c.onclick=()=>showFollowers(c.dataset.w));
+  const k=followers("kedi"),best=k.list[0][0],kc=k.list[0][1],kp=Math.round(100*kc/k.tot);
+  const o1=[best,"süt","uyudu","okula"].filter((v,i,a)=>a.indexOf(v)===i);const o1s=[o1[1],o1[0],o1[2],o1[3]];
+  mcq("l2q1",S.l2,"q1","Soru 1: Makine <b>“kedi”</b> kelimesinden sonra en çok hangi kelimeyi görmüş? (İpucu: Soldan “kedi”ye tıkla.)",o1s,1,
+    `Doğru! “kedi” metinde ${k.tot} kez geçiyor, ${kc} kez ardından “${best}” gelmiş: ${kc} ÷ ${k.tot} = %${kp}.`,"“kedi” kelimesine tıklayıp tabloya bak.",checkL2);
+  const b=followers("bahçede"),bc=b.c["top"],bp=Math.round(100*bc/b.tot);
+  mcq("l2q2",S.l2,"q2","Soru 2: <b>“bahçede”</b> kelimesinden sonra <b>“top”</b> gelme olasılığı yaklaşık yüzde kaç?",["%50","%"+bp,"%100","%10"],1,
+    `Doğru! “bahçede” ${b.tot} kez geçiyor, ${bc} kez ardından “top” gelmiş: ${bc} ÷ ${b.tot} ≈ %${bp}.`,"“bahçede” kelimesine tıkla ve “top” satırına bak.",checkL2);
+  mcq("l2q3",S.l2,"q3","Soru 3: Makine <b>“kedi”</b> kelimesinin ne anlama geldiğini biliyor mu?",
+    ["Evet, kedinin bir hayvan olduğunu biliyor.","Hayır, yalnızca hangi kelimelerin peş peşe geldiğini sayıyor.","Evet, çünkü kedi resimleri görmüş."],1,
+    "Doğru! Makinenin elinde yalnızca sayılardan oluşan bir tablo var.","Makinenin defterinde ne vardı? Sadece kelimeler ve sayılar.",checkL2);
+  checkL2();
+}
+function showFollowers(w){
+  document.querySelectorAll("#corpus .chip").forEach(c=>c.classList.toggle("sel",c.dataset.w===w));
+  const f=followers(w);
+  $("ftBox").innerHTML=`<div style="font-size:15px;margin-bottom:4px">“<b>${esc(w)}</b>” kelimesi metinde <b>${f.tot}</b> kez geçiyor. Makine bu kelimeden sonra şunları görmüş:</div>
+   <table class="ft"><tr><th>Sonraki kelime</th><th>Kaç kez?</th><th>Olasılık</th></tr>${f.list.map(([n,c])=>`<tr><td><b>${esc(wlabel(n))}</b></td><td>${c}</td><td>${c} ÷ ${f.tot} = ${fmtPct(c/f.tot)}</td></tr>`).join("")}</table><div class="bars" id="l2bars"></div>`;
+  renderBars($("l2bars"),f.list.map(([n,c])=>({w:n,p:c/f.tot})),{max:8});
+  if(!S.l2.clicked.includes(w)){S.l2.clicked.push(w);save();}
+  checkL2();
+}
+function checkL2(){
+  const cl=S.l2.clicked.length,sv=solvedCount(S.l2,["q1","q2","q3"]);
+  renderTasks("t2",[["En az 3 farklı kelimeye tıkla ve tablosunu incele ("+Math.min(cl,3)+"/3)",cl>=3],["3 soruyu doğru cevapla ("+sv+"/3)",sv===3]]);
+  if(cl>=3&&sv===3)completeLevel(2,10+10*ftCount(S.l2));
+}
+
+/* ---------------- BÖLÜM 3 ---------------- */
+const l3={order:1,tokens:[],active:false,busy:false};
+function l3model(){return l3.order===1?M1:M2;}
+function setL3Order(o){if(l3.busy)return;l3.order=o;l3.tokens=[];l3.active=false;renderL3();}
+function l3Start(w){if(l3.busy)return;if(w==="?")w=sample(getDist(l3model(),[]));l3.tokens=[w];l3.active=true;renderL3();}
+function renderL3(){
+  $("l3m1").classList.toggle("on",l3.order===1);$("l3m2").classList.toggle("on",l3.order===2);
+  const g=$("l3gen");
+  if(l3.active)g.innerHTML=l3.tokens.map((w,i)=>`<span class="w${i===l3.tokens.length-1?" last":""}">${esc(w)}</span>`).join("")+'<span class="cursor"></span>';
+  else g.innerHTML='<span class="ph">Aşağıdan bir başlangıç kelimesi seç 👇</span>';
+  $("l3starts").style.display=l3.active?"none":"flex";
+  $("l3starts").innerHTML=STARTS.map(w=>`<button class="startw" onclick="l3Start('${w}')">${w}</button>`).join("")+`<button class="startw" onclick="l3Start('?')">🎲 Rastgele</button>`;
+  $("l3btns").style.display=l3.active?"flex":"none";
+  $("l3next").disabled=$("l3auto").disabled=l3.busy;
+  if(l3.active){
+    const t=l3.tokens;
+    $("l3cap").innerHTML=l3.order===1?`Makine yalnızca son kelimeye bakıyor: <b>“${esc(t[t.length-1])}”</b>`:`Makine son 2 kelimeye bakıyor: <b>“${t.length>1?esc(t[t.length-2])+" ":"(başlangıç) "}${esc(t[t.length-1])}”</b>`;
+    renderBars($("l3bars"),getDist(l3model(),t),{max:6});
+  }else{$("l3cap").textContent="Cümle başladığında olasılıklar burada görünecek.";$("l3bars").innerHTML="";}
+  $("l3hist").innerHTML=S.l3.hist.length?S.l3.hist.map(h=>`<li>${esc(h.s)}${h.ended?"":" …"} <span class="tag m">${h.o} kelimeye baktı</span>${h.ended?`<span class="tag ${h.nv?"new":"old"}">${h.nv?"🆕 YENİ: Makine bu cümleyi hiç okumadı!":"📖 Okuduğu bir cümleyi tekrarladı"}</span>`:'<span class="tag other">çok uzadı, kesildi</span>'}</li>`).join(""):'<li style="color:var(--muted)">Henüz cümle üretmedin.</li>';
+  checkL3();
+}
+function l3Step(auto){
+  if(!l3.active||l3.busy)return;l3.busy=true;$("l3next").disabled=$("l3auto").disabled=true;
+  const dist=getDist(l3model(),l3.tokens),keys=renderBars($("l3bars"),dist,{max:6});
+  animatePick($("l3bars"),dist,keys,auto?5:9,w=>{
+    if(w==="$")l3Finish(true);else{l3.tokens.push(w);if(l3.tokens.length>=14)l3Finish(false);}
+    l3.busy=false;renderL3();
+    if(auto&&l3.active)setTimeout(()=>l3Step(true),350);
+  });
+}
+function l3Finish(ended){
+  const s=l3.tokens.join(" "),nv=ended&&!CSET.has(s);
+  if(l3.order===1){S.l3.c1++;if(nv)S.l3.n1++;}else{S.l3.c2++;if(nv)S.l3.n2++;}
+  S.l3.hist.unshift({s,o:l3.order,nv,ended});S.l3.hist=S.l3.hist.slice(0,10);
+  l3.tokens=[];l3.active=false;save();
+  if(nv)toast("🆕 Yeni cümle! Makine bunu hiç okumadı.");
+  renderL3Q();
+}
+function renderL3Q(){
+  if(S.l3.c2<2){$("l3q").innerHTML='<div class="q" style="color:var(--muted)">❓ Soru, “Son 2 kelimeye” modunda 2 cümle ürettikten sonra açılacak.</div>';return;}
+  if($("l3q").dataset.on)return;$("l3q").dataset.on="1";
+  mcq("l3q",S.l3,"q","Son 2 kelimeye bakan makine için hangisi doğru?",
+    ["Daha mantıklı cümleler kurar ama çoğunlukla okuduğu cümleleri tekrar eder.","Daha saçma cümleler kurar.","Kelimelerin anlamını öğrenmiştir."],0,
+    "Doğru! Daha çok kelimeye bakınca seçenekler azalır. Cümleler daha mantıklı olur ama yeni cümle çıkma şansı da azalır.","Ürettiğin cümlelere bak: Hangi modda 📖 etiketi daha çok çıktı?",checkL3);
+}
+function checkL3(){
+  const L=S.l3;
+  renderTasks("t3",[["“Son 1 kelimeye” modunda 3 cümle üret ("+Math.min(L.c1,3)+"/3)",L.c1>=3],
+    ["“Son 1 kelimeye” modunda makinenin hiç okumadığı 🆕 YENİ bir cümle yakala",L.n1>=1],
+    ["“Son 2 kelimeye” modunda 2 cümle üret ("+Math.min(L.c2,2)+"/2)",L.c2>=2],
+    ["Soruyu doğru cevapla",L.q.q===true]]);
+  if(L.c1>=3&&L.n1>=1&&L.c2>=2&&L.q.q===true)completeLevel(3,20+5*Math.min(L.n1,3)+(L.ft.q?10:0));
+}
+
+/* ---------------- BÖLÜM 4 ---------------- */
+function l4zone(T){if(T<=0.3)return ["low","Düşük: temkinli"];if(T>=0.7&&T<=1.3)return ["mid","Orta: dengeli"];if(T>=1.7)return ["high","Yüksek: çılgın"];return ["other","Ara değer"];}
+function renderL4Preview(){
+  const T=+$("l4T").value,z=l4zone(T);
+  $("l4Tv").textContent=T.toFixed(1);$("l4zone").className="tag "+z[0];$("l4zone").textContent=z[1];
+  renderBars($("l4bars"),getDist(M1,[$("l4ctx").value],T,ALPHA),{max:7});
+}
+function l4Gen(){
+  const T=+$("l4T").value,z=l4zone(T)[0],r=generate(M1,null,T,ALPHA,12);
+  const s=r.tokens.length?r.tokens.join(" ")+(r.ended?"":" …"):"(boş: makine cümleyi hemen bitirdi!)";
+  const rep=S.l4.hist.some(h=>h.s===s);
+  if(z!=="other")S.l4[z]++;
+  S.l4.hist.unshift({s,T,z,rep});S.l4.hist=S.l4.hist.slice(0,12);save();renderL4();
+}
+function renderL4(){
+  const names={low:"düşük",mid:"orta",high:"yüksek",other:"ara değer"};
+  $("l4hist").innerHTML=S.l4.hist.length?S.l4.hist.map(h=>`<li>${esc(h.s)} <span class="tag ${h.z}">🌡️ ${(+h.T).toFixed(1)} · ${names[h.z]}</span>${h.rep?'<span class="tag old">🔁 aynı cümle yine geldi!</span>':""}</li>`).join(""):'<li style="color:var(--muted)">Henüz cümle üretmedin.</li>';
+  renderL4Q();checkL4();
+}
+function renderL4Q(){
+  const L=S.l4;
+  if(!(L.low>=2&&L.mid>=2&&L.high>=2)){$("l4q1").innerHTML='<div class="q" style="color:var(--muted)">❓ Sorular, üç sıcaklıkta da 2\'şer cümle ürettikten sonra açılacak.</div>';$("l4q2").innerHTML="";return;}
+  if($("l4q1").dataset.on)return;$("l4q1").dataset.on="1";
+  mcq("l4q1",L,"q1","Bir ödev yardımcısının her seferinde tutarlı ve aynı cevabı vermesini istiyorsan sıcaklığı nasıl ayarlarsın?",["Düşük","Yüksek","Fark etmez"],0,
+    "Doğru! Düşük sıcaklıkta makine hep en olası kelimeyi seçer, cevaplar tutarlı olur.","Hangi sıcaklıkta hep aynı cümle geliyordu?",checkL4);
+  mcq("l4q2",L,"q2","Sıcaklık çok yükselince makine neden saçmalamaya başladı?",["Makine yoruldu.","Olasılığı düşük kelimelere, hatta o kelimeden sonra hiç görmediği kelimelere de neredeyse eşit şans verdi.","İnternet bağlantısı yavaşladı."],1,
+    "Doğru! Yüksek sıcaklıkta kısa çubuklar uzar, uzun çubuklar kısalır; şaşırtıcı ama anlamsız seçimler artar.","Sürgüyü 2.0'a getirip çubuklara bak.",checkL4);
+}
+function checkL4(){
+  const L=S.l4,sv=solvedCount(L,["q1","q2"]);
+  renderTasks("t4",[["Düşük sıcaklıkta (0 - 0.3) 2 cümle üret ("+Math.min(L.low,2)+"/2)",L.low>=2],
+    ["Orta sıcaklıkta (0.7 - 1.3) 2 cümle üret ("+Math.min(L.mid,2)+"/2)",L.mid>=2],
+    ["Yüksek sıcaklıkta (1.7 - 2.0) 2 cümle üret ("+Math.min(L.high,2)+"/2)",L.high>=2],
+    ["2 soruyu doğru cevapla ("+sv+"/2)",sv===2]]);
+  if(L.low>=2&&L.mid>=2&&L.high>=2&&sv===2)completeLevel(4,20+10*ftCount(L));
+}
+
+/* ---------------- BÖLÜM 5 ---------------- */
+let M5=null,M5text=null;
+function userPeynir(txt){return toSentences(txt).filter(t=>t.some(w=>w.startsWith("peynir"))).length;}
+function l5Train(){
+  const txt=$("l5text").value;S.l5.userText=txt;
+  const us=toSentences(txt);
+  if(!us.length){$("l5warn").textContent="Kutuya en az bir cümle yaz.";return;}
+  const sents=[...toSentences(AY_BASE.join("\n")),...us];
+  M5=buildModel(sents,1);M5text=txt;S.l5.trained=true;save();
+  $("l5warn").textContent="";
+  $("l5info").innerHTML=`Makine toplam <b>${sents.length}</b> cümle okudu (${AY_BASE.length} doğru bilgi + senin ${us.length} cümlen). "ay" kelimesinden sonra:`;
+  renderBars($("l5bars"),getDist(M5,["ay"]),{max:8});
+  toast("✅ Makine eğitildi! Şimdi test et.");checkL5();
+}
+function l5Test(){
+  if(!M5){$("l5warn").textContent="Önce “Makineyi Eğit” düğmesine bas!";return;}
+  if($("l5text").value!==M5text){$("l5warn").textContent="Metni değiştirdin! Önce “Makineyi Eğit” düğmesine tekrar bas.";return;}
+  $("l5warn").textContent="";
+  let hit=0;const res=[];
+  for(let i=0;i<10;i++){const r=generate(M5,["ay"],1,0,12);const has=r.tokens.some(t=>t.startsWith("peynir"));if(has)hit++;res.push({s:r.tokens.join(" "),has});}
+  S.l5.tries++;S.l5.lastHit=hit;
+  const ok=hit>=5;
+  $("l5res").innerHTML=`<div class="bigres" style="color:${ok?"var(--ok)":"var(--bad)"}">10 cümlenin ${hit} tanesinde "peynir" var ${ok?"🎉":""}</div>
+   <div style="margin-bottom:6px">${ok?"Başardın! Makineyi kandırdın.":"Henüz yeterli değil. Daha fazla cümle ekle, makineyi yeniden eğit ve tekrar test et."}</div>
+   <ul class="hist">${res.map(r=>`<li class="${r.has?"has":""}">${esc(r.s)}${r.has?" 🧀":""}</li>`).join("")}</ul>`;
+  if(ok&&!S.l5.success){S.l5.success=true;S.l5.peynirCount=userPeynir(M5text);$("l5cnt").textContent=S.l5.peynirCount;save();checkL5();completeLevel(5,30);}
+  else{save();checkL5();}
+}
+function checkL5(){
+  renderTasks("t5",[["Kutuya en az bir cümle yaz ve makineyi eğit",S.l5.trained],["Testte 10 cümlenin en az 5'inde “peynir” geçsin",S.l5.success]]);
+}
+function l5Free(){
+  const own=toSentences($("l5free").value);
+  if(own.length<3){toast("En az 3 cümle yaz.");return;}
+  const m=buildModel(own,1),set=new Set(own.map(s=>s.join(" "))),out=[];
+  for(let i=0;i<5;i++){const r=generate(m,null,1,0,14);const s=r.tokens.join(" ");out.push(`<li>${esc(s)}${r.ended?"":" …"} <span class="tag ${set.has(s)?"old":"new"}">${set.has(s)?"📖 senin cümlen":"🆕 yeni"}</span></li>`);}
+  $("l5freeOut").innerHTML=out.join("");
+}
+
+/* ---------------- BÖLÜM 6 ---------------- */
+function tfScore(){return TF.filter((x,i)=>S.l6.tf[i]===x.a).length;}
+function renderTF(){
+  $("tfList").innerHTML=TF.map((x,i)=>{const a=S.l6.tf[i],d=a!==undefined,r=d&&a===x.a;
+    const cls=v=>d&&a===v?(r?" right":" wrong"):"";
+    return `<div class="tf"><div><b>${i+1}.</b> ${esc(x.s)}</div><div class="row"><button class="opt${cls(true)}" ${d?"disabled":""} onclick="answerTF(${i},true)">Doğru</button><button class="opt${cls(false)}" ${d?"disabled":""} onclick="answerTF(${i},false)">Yanlış</button></div>${d?`<div class="fb ${r?"ok":"bad"}">${r?"✓ Doğru bildin!":"✗ Doğru cevap: "+(x.a?"Doğru":"Yanlış")+"."} ${esc(x.e)}</div>`:""}</div>`;}).join("");
+}
+function answerTF(i,v){if(S.l6.tf[i]!==undefined)return;S.l6.tf[i]=v;save();renderTF();checkL6();}
+function checkL6(){
+  const n=TF.filter((x,i)=>S.l6.tf[i]!==undefined).length,a1=S.l6.a1.trim().length>=10,a2=S.l6.a2.trim().length>=10;
+  renderTasks("t6",[["6 cümleyi cevapla ("+n+"/6)",n===6],["1. soruyu cevapla",a1],["2. soruyu cevapla",a2]]);
+  if(n===6&&a1&&a2)completeLevel(6,5*tfScore());
+}
+
+/* ---------------- KARNE ---------------- */
+function showKarne(){
+  const done=[1,2,3,4,5,6].filter(n=>S.done[n]).length,tot=Object.values(S.xp).reduce((a,b)=>a+b,0);
+  const k=(a,b)=>`<div class="krow"><span>${a}</span><b>${b}</b></div>`;
+  $("karneBox").innerHTML=`<h2 style="margin-top:0">📋 Kelime Kahini Karnesi</h2>
+   ${k("Ad / Takım",esc(S.name.trim()||"(isim yazılmadı)"))}
+   ${k("Tarih",new Date().toLocaleString("tr-TR"))}
+   ${k("Tamamlanan bölüm",done+" / 6 "+[1,2,3,4,5,6].map(n=>S.done[n]?"✓":"·").join(" "))}
+   ${k("Toplam puan","⭐ "+tot)}
+   ${k("1. Tahmin puanı",l1Score()+" / 18")}
+   ${k("2. İlk denemede doğru",ftCount(S.l2)+" / 3")}
+   ${k("3. Üretilen cümle / yeni cümle",(S.l3.c1+S.l3.c2)+" / "+(S.l3.n1+S.l3.n2))}
+   ${k("4. Düşük / orta / yüksek sıcaklık cümlesi",S.l4.low+" / "+S.l4.mid+" / "+S.l4.high)}
+   ${k("5. Botu kandırdı mı?",S.l5.success?"✓ Evet ("+S.l5.peynirCount+" cümleyle, "+S.l5.tries+" testte)":"Henüz değil")}
+   ${k("Final: Doğru / Yanlış",tfScore()+" / 6")}
+   <p style="margin:12px 0 2px"><b>Cevap 1:</b></p><div class="kans">${esc(S.l6.a1||"-")}</div>
+   <p style="margin:6px 0 2px"><b>Cevap 2:</b></p><div class="kans">${esc(S.l6.a2||"-")}</div>
+   <div class="row" style="margin-top:14px"><button class="btn" onclick="window.print()">🖨️ Yazdır</button><button class="btn sec" onclick="document.getElementById('karne').style.display='none'">Kapat</button></div>`;
+  $("karne").style.display="block";
+}
+
+/* ---------------- BAŞLAT ---------------- */
+function init(){
+  load();
+  $("studentName").value=S.name;$("studentName").oninput=e=>{S.name=e.target.value;save();};
+  l1view=Math.min(S.l1.answers.length,S.done[1]?6:5);if(S.l1.answers.length>=6)l1view=6;
+  renderL1();initL2();renderL3();renderL3Q();
+  $("l4T").oninput=renderL4Preview;$("l4ctx").onchange=renderL4Preview;renderL4Preview();renderL4();
+  $("l5base").innerHTML=AY_BASE.map(esc).join("<br>");$("l5text").value=S.l5.userText;
+  $("l5text").oninput=e=>{S.l5.userText=e.target.value;save();};$("l5cnt").textContent=S.l5.peynirCount;checkL5();
+  renderTF();$("a1").value=S.l6.a1;$("a2").value=S.l6.a2;
+  $("a1").oninput=e=>{S.l6.a1=e.target.value;save();checkL6();};$("a2").oninput=e=>{S.l6.a2=e.target.value;save();checkL6();};
+  for(let n=1;n<=6;n++)if(S.done[n])$("end"+n).style.display="block";
+  checkL6();
+  let start=1;for(let n=1;n<=6;n++){if(unlocked(n))start=n;if(!S.done[n])break;}
+  renderXP();showLevel(start,true);
+}
+if(typeof document!=="undefined"&&document.addEventListener)document.addEventListener("DOMContentLoaded",init);
+</script>
+</body>
+</html>
