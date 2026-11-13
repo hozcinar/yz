@@ -22,7 +22,17 @@ header{background:linear-gradient(135deg,var(--navy),var(--navy-2));color:#fff;p
 header h1{margin:2px 0 0;font-size:23px;letter-spacing:-.3px}
 header p{margin:2px 0 0;font-size:13.5px;color:#cbd5e1}
 .hright{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.hright input{padding:8px 11px;border-radius:8px;border:1px solid #64748b;background:rgba(255,255,255,.95);font-size:14px;width:205px;font-weight:600;color:var(--text)}
+.hright input{padding:8px 11px;border-radius:8px;border:1px solid #64748b;background:rgba(255,255,255,.95);font-size:14px;width:190px;font-weight:600;color:var(--text)}
+.hright select{padding:8px 10px;border-radius:8px;border:1px solid #64748b;background:rgba(255,255,255,.95);font-size:14px;font-weight:700;color:var(--navy);cursor:pointer}
+.cd-msg{margin-top:8px;font-weight:800;font-size:13.5px;padding:7px 11px;border-radius:7px;background:#fef3c7;border:1px solid #f59e0b;color:#92400e}
+.boost-box{margin-top:10px;padding:10px 13px;background:#eff6ff;border:1px dashed #60a5fa;border-radius:9px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;font-size:13.5px}
+.submit-card{margin-top:18px;background:linear-gradient(135deg,#f8fafc,#eff6ff);border:2px solid var(--blue);border-radius:14px;padding:18px 20px}
+.submit-card h3{margin:0 0 8px;color:var(--navy);font-size:20px}
+.sub-chk{margin:10px 0 14px;display:flex;flex-direction:column;gap:6px}
+.sub-chk div{display:flex;align-items:center;gap:8px;font-size:14.5px;padding:6px 10px;border-radius:8px;background:#fff;border:1px solid var(--border)}
+.sub-chk div.ok{border-color:#86efac;background:#f0fdf4;color:var(--ok);font-weight:700}
+.sub-chk div.miss{border-color:#fca5a5;background:#fef2f2;color:var(--bad);font-weight:600}
+.sub-receipt{margin-top:12px;background:var(--ok-l);border:2px solid #16a34a;border-radius:11px;padding:14px 16px;color:#14532d}
 .rank-pill{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);color:#fff;font-weight:700;padding:7px 12px;border-radius:20px;font-size:13.5px}
 .xp{background:var(--amber);color:#111827;font-weight:800;padding:7px 13px;border-radius:20px;font-size:14.5px;box-shadow:0 2px 6px rgba(0,0,0,.2)}
 .hbtn{background:#fff;color:var(--navy);border:none;border-radius:8px;padding:8px 12px;font-weight:700;cursor:pointer;font-size:13.5px;transition:.15s}
@@ -224,6 +234,11 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:10px 0 30px}
     <p>ChatGPT ve Gemini gibi yapay zekâlar gerçekten düşünüyor mu, yoksa olasılık mı hesaplıyor?</p>
   </div>
   <div class="hright">
+    <select id="studentGrade" title="Sınıfını Seç">
+      <option value="">Sınıf Seç</option>
+      <option value="9">9. Sınıf</option>
+      <option value="10">10. Sınıf</option>
+    </select>
     <input id="studentName" placeholder="Ad Soyad / Takım Adı">
     <span class="rank-pill" id="rankBadge">🌱 Çaylak</span>
     <span class="xp">⭐ <span id="xpTotal">0</span> XP</span>
@@ -234,11 +249,11 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:10px 0 30px}
 
 <main>
   <div class="card howto">
-    <div><b>🕹️ Laboratuvar Rehberi:</b> Bölümleri sırayla tamamla, görevleri yeşile çevir (✓) ve bölüm sonundaki <b>💡 Keşif Özeti</b> kartlarını oku.</div>
+    <div><b>🕹️ Laboratuvar Rehberi:</b> Bölümleri sırayla tamamla, yanlış tıklayıp puan kaybetmek yerine ipuçlarını oku ve sonunda sonucunu öğretmene gönder!</div>
     <div class="howto-steps">
-      <span>1️⃣ Adını sağ üste yaz</span>
-      <span>2️⃣ 6 bölümü bitirip XP topla</span>
-      <span>3️⃣ Sonunda <b>📋 Karnem</b> ekranını öğretmene göster</span>
+      <span>1️⃣ Sınıfını (9/10) seç ve adını yaz</span>
+      <span>2️⃣ 6 bölümü bitir ve <b>en az 145 XP</b> topla</span>
+      <span>3️⃣ Finalde <b>📤 Sonuçlarımı Gönder</b>'e bas</span>
     </div>
   </div>
 
@@ -314,7 +329,8 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:10px 0 30px}
       <h3>💡 2. Bölüm Keşif Özeti</h3>
       <p>• Bizim küçük modelimiz <b>"takım"</b> veya <b>"sunucu"</b> kelimesinin ne olduğunu gerçek hayatta hiç görmedi; yalnızca hangi kelimelerin hangi sıklıkla yan yana geldiğini saydı (<b>N-Gram istatistiği</b>).</p>
       <p>• <b>Gerçek ChatGPT ile farkı ne?</b> ChatGPT dev bir sayım tablosu tutmaz; internetten milyarlarca cümleyi okurken kelimeler arası ilişkileri <b>milyarlarca sayısal ağırlık (yapay sinir ağı)</b> olarak sıkıştırır. Ama temel hedefi birebir aynıdır: <b>Sıradaki parçanın olasılık dağılımını çıkarmak!</b></p>
-      <button class="btn big" onclick="showLevel(3)">3. Bölüme Geç: Olasılık Çarkıyla Cümle Üret →</button>
+      <div id="boost2"></div>
+      <button class="btn big" style="margin-top:8px" onclick="showLevel(3)">3. Bölüme Geç: Olasılık Çarkıyla Cümle Üret →</button>
     </div>
   </section>
 
@@ -386,7 +402,8 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:10px 0 30px}
       <h3>💡 3. Bölüm Keşif Özeti</h3>
       <p>• Makine <b>hiç okumadığı yepyeni cümleler</b> üretebiliyor! Ancak yalnızca son 1 kelimeye baktığında cümlenin başını unuttuğu için <i>"öğretmen son saniyede gol attı"</i> gibi komik birleşimler yapabiliyor.</p>
       <p>• Gerçek Büyük Dil Modelleri (Transformer mimarisi), <b>Dikkat (Attention)</b> mekanizması sayesinde yalnızca son 1–2 kelimeye değil, binlerce kelimelik geçmiş bağlamdaki ilgili kelimelere ağırlık vererek tutarlı metinler üretir.</p>
-      <button class="btn big" onclick="showLevel(4)">4. Bölüme Geç: Sıcaklık ve Halüsinasyon →</button>
+      <div id="boost3"></div>
+      <button class="btn big" style="margin-top:8px" onclick="showLevel(4)">4. Bölüme Geç: Sıcaklık ve Halüsinasyon →</button>
     </div>
   </section>
 
@@ -445,7 +462,8 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:10px 0 30px}
       <h3>💡 4. Bölüm Keşif Özeti</h3>
       <p>• <b>Sıcaklık = 0.0</b> iken aynı başlangıç kelimesi her seferinde birebir aynı cümleyi verir; kod yazma veya matematik özetlerinde düşük sıcaklık tercih edilir. Hikâye veya beyin fırtınasında ise orta-yüksek sıcaklık kullanılır.</p>
       <p>• <b>Halüsinasyon</b>, yapay zekânın yalan söylemek istemesi değildir; model doğruluk kontrolü yapmadan <b>"resmi bir ansiklopedi cümlesine en çok benzeyen"</b> kelime dizisini istatistiksel olarak ürettiği için çok emin bir üslupla yanlış bilgi verebilir.</p>
-      <button class="btn big" onclick="showLevel(5)">5. Bölüme Geç: Veri Zehirlenmesiyle Botu Kandır →</button>
+      <div id="boost4"></div>
+      <button class="btn big" style="margin-top:8px" onclick="showLevel(5)">5. Bölüme Geç: Veri Zehirlenmesiyle Botu Kandır →</button>
     </div>
   </section>
 
@@ -459,7 +477,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:10px 0 30px}
     <div class="info">
       Siber güvenlik ve YZ dünyasında <b>Red-Team</b> uzmanları, sistemlerin zayıf noktalarını bulmak için kontrollü saldırı testleri yapar. Şimdi sen de bir Red-Team uzmanısın!<br>
       Makinenin hafızasında <b>Ay</b> hakkında 8 bilimsel doğru cümle var. <b>Görevin:</b> Eğitim verisine kendi cümlelerini ekleyerek makinenin <b>"Ay..."</b> ile başlayan 10 cümlesinin <b>en az 5'inde "peynir"</b> kelimesini geçirmek! 🧀🌕<br>
-      <small><b>Kural:</b> Yazdığın her cümle <b>en az 3 kelimeden</b> oluşmalı ve içinde hem <b>"ay"</b> hem <b>"peynir"</b> geçmeli.</small>
+      <small><b>Kurallar:</b> "+ Örnek Cümle Ekle" hakkın <b>yalnızca 1 kezdir</b>. Kopyala-yapıştır (aynı cümleyi tekrarlama) sayılmaz; kendi kelimelerinle <b>en az 4 farklı</b>, her biri <b>en az 3 kelimelik</b> ve içinde hem <b>"ay"</b> hem <b>"peynir"</b> geçen cümle yazmalısın.</small>
     </div>
     <div class="tasks" id="t5"></div>
 
@@ -468,10 +486,10 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:10px 0 30px}
         <h4>📘 Makinenin Mevcut Doğru Veri Seti (Sabit — 8 Cümle)</h4>
         <div class="basecorp" id="l5base"></div>
 
-        <h4>🧪 Senin Ekleyeceğin Eğitim Cümleleri (Her satıra en az 3 kelimelik 1 cümle)</h4>
-        <textarea id="l5text" rows="5" placeholder="Örnek:&#10;Ay sarı peynirden yapılmıştır.&#10;Ay yüzeyinde taze peynir bulunur."></textarea>
+        <h4>🧪 Senin Ekleyeceğin Eğitim Cümleleri (En az 4 farklı cümle yaz)</h4>
+        <textarea id="l5text" rows="5" placeholder="Örnek:&#10;Ay sarı peynirden yapılmıştır.&#10;Ay yüzeyinde taze peynir bulunur.&#10;(Kendi farklı cümlelerini alt alta yaz...)"></textarea>
         <div class="row" style="margin-top:8px">
-          <button class="btn sm purple" onclick="addSamplePoison()">+ Örnek Cümle Ekle</button>
+          <button class="btn sm purple" id="btnSamplePoison" onclick="addSamplePoison()">+ 1 Örnek Cümle Gör</button>
           <button class="btn" onclick="l5Train()">1) Makineyi Eğit</button>
           <button class="btn sec" onclick="l5Test()">2) 10 Cümlelik Test Yap</button>
         </div>
@@ -526,28 +544,29 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:10px 0 30px}
   <section class="level card" id="lvl6">
     <div class="lvl-title">
       <span class="badge">FİNAL</span>
-      <h2>YZ Dedektifi Sınavı ve Ders Karnesi</h2>
+      <h2>YZ Dedektifi Sınavı ve Sonuç Gönderimi</h2>
       <span class="time-tag">⏱️ ~8 dk</span>
     </div>
     <div class="info">
-      Son adım! Aşağıdaki 6 ifadeyi <b>Doğru / Yanlış</b> olarak değerlendir (her soruda <b>tek hakkın</b> var). Ardından 2 açık uçlu soruyu <b>en az 5 kelimelik kendi cümlelerinle</b> yanıtla ve karneni oluştur!
+      Son adım! Aşağıdaki 6 ifadeyi <b>Doğru / Yanlış</b> olarak değerlendir (geçmek için <b>en az 5/6 doğru</b> gerekir; altında kalırsan açıklamaları okuyup soruları karıştırarak tekrar deneyebilirsin). Ardından 2 açık uçlu soruyu <b>en az 8 kelimelik, ders kavramlarıyla bağlantılı kendi cümlelerinle</b> yanıtla ve sonucunu öğretmene gönder!
     </div>
     <div class="tasks" id="t6"></div>
     <div id="tfList"></div>
+    <div id="tfRetryBox"></div>
 
     <div class="q">
-      <div class="qt">1. Ödev yaparken bir arkadaşın <i>"ChatGPT çok net ve resmi bir dille yazdı, kesin doğrudur, kontrol etmeye gerek yok"</i> diyor. Bugün deneyerek gördüğün mekanizmalara (olasılık, anlamama, halüsinasyon) dayanarak ona ne açıklarsın?</div>
-      <textarea id="a1" rows="3" placeholder="En az 5 kelimelik kendi açıklamanı yaz..."></textarea>
-      <div id="a1msg" style="font-size:13px;color:var(--muted);margin-top:4px"></div>
+      <div class="qt">1. Ödev yaparken bir arkadaşın <i>"ChatGPT çok net ve resmi bir dille yazdı, kesin doğrudur, kontrol etmeye gerek yok"</i> diyor. Bugün deneyerek gördüğün mekanizmalara dayanarak ona ne açıklarsın?</div>
+      <textarea id="a1" rows="3" placeholder="En az 8 kelimelik, bugünkü deneylerle bağlantılı kendi açıklamanı yaz..."></textarea>
+      <div id="a1msg" style="font-size:13.5px;font-weight:600;color:var(--muted);margin-top:5px"></div>
     </div>
 
     <div class="q">
       <div class="qt">2. 5. Bölümde "Ay peynirden yapılmıştır" deneyinde gördüğün durumu düşün: İnternette belirli bir grup insan veya konu hakkında çok fazla önyargılı/yanlış metin varsa, bunlarla eğitilen bir yapay zekâ nasıl davranır?</div>
-      <textarea id="a2" rows="3" placeholder="En az 5 kelimelik kendi açıklamanı yaz..."></textarea>
-      <div id="a2msg" style="font-size:13px;color:var(--muted);margin-top:4px"></div>
+      <textarea id="a2" rows="3" placeholder="En az 8 kelimelik, veri seti ve çıktı ilişkisini anlatan kendi açıklamanı yaz..."></textarea>
+      <div id="a2msg" style="font-size:13.5px;font-weight:600;color:var(--muted);margin-top:5px"></div>
     </div>
 
-    <button class="btn big" onclick="showKarne()">📋 Ders Tamamlama Karnemi Göster</button>
+    <div class="submit-card" id="submitPanel"></div>
 
     <div class="endcard" id="end6">
       <h3>🏆 Tebrikler YZ Dedektifi! Bugün Keşfettiğin 5 Temel İlke</h3>
@@ -645,10 +664,14 @@ const TF = [
   {s:"Bizim kurduğumuz küçük dil modeli 'takım' ve 'robot' kelimelerinin gerçek dünyadaki anlamlarını biliyordu.", a:false, e:"Model yalnızca kelimelerin hangi sırayla ve sıklıkla yan yana geldiğini saydı."}
 ];
 
-const LEVELS = ["Tahmin Düellosu","Makinenin Hafızası","Olasılık Çarkı","Sıcaklık & Halüsinasyon","Veri Zehirlenmesi","Final & Karne"];
+const LEVELS = ["Tahmin Düellosu","Makinenin Hafızası","Olasılık Çarkı","Sıcaklık & Halüsinasyon","Veri Zehirlenmesi","Final & Gönder"];
 const STARTS = ["takım","oyuncu","sunucu","öğretmen","sınıf","robot","hakem"];
 const WHEEL_COLORS = ["#2563eb","#0d9488","#7c3aed","#d97706","#dc2626","#0891b2","#4f46e5"];
-const LS = "kelimeKahini_v2";
+const LS = "kelimeKahini_v3";
+const MIN_SUBMIT_XP = 145;
+const COOLDOWN_MS = 4000;
+const NTFY_URL = "https://ntfy.sh/bk_yz_kelime_d66d35030735aef792c8";
+const PUB_JWK = {kty:"EC",crv:"P-256",x:"gvjpuwp1Y9AzqIlGq6M4zAg9tNcXQ3W7sEpsTyACPaQ",y:"f-17BmPAvjrsvmgc_yMSKXYZWC8y8gl8smxv7kGCTgw",ext:true};
 const TEACHER = (typeof location!=="undefined") && new URLSearchParams(location.search).has("ogretmen");
 
 /* ==================== DİL MODELİ MOTORU ==================== */
@@ -755,18 +778,23 @@ function splitTurkishTokens(text){
 }
 
 /* ==================== DURUM YÖNETİMİ ==================== */
+function makeSubId(){
+  return "s_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2,8);
+}
 function defaultState(){
   return {
-    name:"", done:{}, xp:{},
-    l1:{answers:[], combo:0, maxCombo:0, tokTried:false},
-    l2:{clicked:[], q:{}, ft:{}},
-    l3:{c1:0, n1:0, c2:0, n2:0, hist:[], q:{}, ft:{}},
-    l4:{low:0, mid:0, high:0, hist:[], halSolved:false, halFt:null, q:{}, ft:{}},
-    l5:{userText:"", trained:false, success:false, peynirCount:0, tries:0, lastHit:0},
-    l6:{tf:{}, a1:"", a2:""}
+    subId:makeSubId(), grade:"", name:"", done:{}, xp:{},
+    submittedAt:"", submittedXP:0, submittedReceipt:"",
+    l1:{answers:[], combo:0, maxCombo:0, tokTried:false, replays:0},
+    l2:{clicked:[], q:{}, ft:{}, wrongs:{}, optOrder:{}, replays:0},
+    l3:{c1:0, n1:0, c2:0, n2:0, hist:[], q:{}, ft:{}, wrongs:{}, optOrder:{}, replays:0},
+    l4:{low:0, mid:0, high:0, hist:[], halSolved:false, halFt:null, halWrongs:0, q:{}, ft:{}, wrongs:{}, optOrder:{}, replays:0},
+    l5:{userText:"", sampleUsed:false, trained:false, success:false, peynirCount:0, tries:0, lastHit:0},
+    l6:{tf:{}, order:[0,1,2,3,4,5], tfRetries:0, a1:"", a2:""}
   };
 }
 let S = defaultState();
+const cooldownTimers = {};
 function load(){
   try{
     const d = JSON.parse(localStorage.getItem(LS));
@@ -774,16 +802,19 @@ function load(){
     const def = defaultState();
     for(const k in def){
       if(d[k]===undefined) continue;
-      S[k] = (typeof def[k]==="object" && !Array.isArray(def[k])) ? Object.assign(def[k], d[k]) : d[k];
+      S[k] = (typeof def[k]==="object" && d[k]!==null && !Array.isArray(def[k])) ? Object.assign(def[k], d[k]) : d[k];
     }
+    if(!S.subId) S.subId = makeSubId();
+    if(!Array.isArray(S.l6.order) || S.l6.order.length!==6) S.l6.order=[0,1,2,3,4,5];
   }catch(e){}
 }
 function save(){ try{ localStorage.setItem(LS, JSON.stringify(S)); }catch(e){} }
 function resetAll(){
   if(typeof window!=="undefined" && window.confirm && !window.confirm("Tüm ilerlemen ve cevapların sıfırlanacak (Yeni öğrenci için). Emin misin?")) return;
   localStorage.removeItem(LS);
+  Object.values(cooldownTimers).forEach(iv=>clearInterval(iv));
   S = defaultState();
-  l1view = 0; M5 = null; M5text = null;
+  l1view = 0; M5 = null; M5text = null; sampleIdx = 0;
   document.querySelectorAll(".endcard").forEach(e=>e.style.display="none");
   ["l3q1","l4q1"].forEach(id=>{const el=$(id); if(el) delete el.dataset.on;});
   initUI();
@@ -797,7 +828,13 @@ const $ = id => document.getElementById(id);
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 function wlabel(w){return w==="$"?"(cümle biter)":w;}
 function fmtPct(p){const v=p*100;return v>0&&v<1?"<%1":"%"+Math.round(v);}
-function toast(m){const t=$("toast");t.textContent=m;t.style.display="block";clearTimeout(toast._t);toast._t=setTimeout(()=>t.style.display="none",2700);}
+function toast(m){const t=$("toast");t.textContent=m;t.style.display="block";clearTimeout(toast._t);toast._t=setTimeout(()=>t.style.display="none",2800);}
+function shuffleArr(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+function totalXP(){return Object.values(S.xp).reduce((a,b)=>a+b,0);}
 
 function renderBars(el,dist,o={}){
   const max=o.max||6, top=dist.slice(0,max), rest=dist.slice(max);
@@ -840,7 +877,6 @@ function spinWheelAndPick(barEl, dist, rows, fast, cb){
   const pick = sample(dist);
   const keys = rows.map(r=>r.k);
   const targetKey = keys.includes(pick) ? pick : "__rest";
-  // Seçilen dilimin orta açısını bul ve ibreye (üst -90 dereceye) getir
   let acc = 0, midFrac = 0.5;
   for(const r of rows){
     if(r.k === targetKey){ midFrac = acc + r.p/2; break; }
@@ -874,28 +910,62 @@ function renderTasks(id,items){
   $(id).innerHTML="<h4>🎯 Bu Bölümün Görevleri</h4>"+items.map(it=>`<div class="task${it[1]?" ok":""}"><span class="ic">${it[1]?"✓":""}</span><span class="t">${it[0]}</span></div>`).join("");
 }
 
+function qXP(store, key, minPts=2){
+  const w = (store.wrongs && store.wrongs[key]) || 0;
+  return w===0 ? 8 : w===1 ? 4 : minPts;
+}
+
 function mcq(cid,store,key,question,options,correct,okMsg,badMsg,after,onWrong){
   const el=$(cid);
-  function render(wrongIdx){
-    const solved=store.q[key]===true;
-    el.innerHTML=`<div class="q"><div class="qt">${question}</div><div class="row">${options.map((o,i)=>{
+  store.wrongs = store.wrongs || {};
+  store.optOrder = store.optOrder || {};
+  if(!Array.isArray(store.optOrder[key]) || store.optOrder[key].length !== options.length){
+    store.optOrder[key] = options.map((_,idx)=>idx);
+  }
+  let cdUntil = 0;
+  function render(wrongOrigIdx){
+    const solved = store.q[key]===true;
+    const remSec = Math.max(0, Math.ceil((cdUntil - Date.now()) / 1000));
+    const inCd = !solved && remSec > 0;
+    const ord = store.optOrder[key];
+    el.innerHTML=`<div class="q"><div class="qt">${question}</div><div class="row">${ord.map(origIdx=>{
+      const o = options[origIdx];
       let c="opt";
-      if(solved && i===correct) c+=" right";
-      if(!solved && i===wrongIdx) c+=" wrong";
-      return `<button class="${c}" ${solved?"disabled":""} data-i="${i}">${esc(o)}</button>`;
-    }).join("")}</div>${solved?`<div class="fb ok">✓ ${okMsg}</div>`:(wrongIdx!=null?`<div class="fb bad">✗ ${badMsg}</div>`:"")}</div>`;
-    if(!solved){
+      if(solved && origIdx===correct) c+=" right";
+      if(!solved && origIdx===wrongOrigIdx) c+=" wrong";
+      return `<button class="${c}" ${(solved || inCd)?"disabled":""} data-orig="${origIdx}">${esc(o)}</button>`;
+    }).join("")}</div>${
+      solved ? `<div class="fb ok">✓ ${okMsg} <small>(+${qXP(store,key)} XP)</small></div>`
+      : (wrongOrigIdx!=null ? `<div class="fb bad">✗ ${badMsg}</div>` : "")
+    }${inCd ? `<div class="cd-msg">⏳ Rastgele tıklama koruması: İpucunu oku ve tabloya/deneye bak (${remSec} sn)...</div>` : ""}</div>`;
+    if(!solved && !inCd){
       el.querySelectorAll("button").forEach(b=>b.onclick=()=>{
-        const i=+b.dataset.i;
-        if(store.ft[key]===undefined) store.ft[key]=(i===correct);
-        if(i===correct){store.q[key]=true;save();render();if(after)after();}
-        else{save();render(i);if(onWrong)onWrong();}
+        const origIdx = +b.dataset.orig;
+        if(store.ft[key]===undefined) store.ft[key]=(origIdx===correct);
+        if(origIdx===correct){
+          clearInterval(cooldownTimers[cid]);
+          store.q[key]=true; save(); render(); if(after)after();
+        } else {
+          store.wrongs[key] = (store.wrongs[key]||0) + 1;
+          cdUntil = Date.now() + COOLDOWN_MS;
+          save(); render(origIdx); if(onWrong)onWrong();
+          clearInterval(cooldownTimers[cid]);
+          cooldownTimers[cid] = setInterval(()=>{
+            if(Date.now() >= cdUntil){
+              clearInterval(cooldownTimers[cid]);
+              render(origIdx);
+            } else {
+              const cdEl = el.querySelector(".cd-msg");
+              if(cdEl) cdEl.textContent = `⏳ Rastgele tıklama koruması: İpucunu oku ve tabloya/deneye bak (${Math.max(1,Math.ceil((cdUntil-Date.now())/1000))} sn)...`;
+            }
+          }, Math.min(250, Math.max(40, Math.floor(COOLDOWN_MS/3))));
+        }
       });
     }
   }
   render();
 }
-function ftCount(store){return Object.values(store.ft).filter(Boolean).length;}
+function ftCount(store){return Object.values(store.ft||{}).filter(Boolean).length;}
 function solvedCount(store,keys){return keys.filter(k=>store.q[k]===true).length;}
 
 /* ==================== SEKMELER, RÜTBE & XP ==================== */
@@ -907,15 +977,16 @@ function renderTabs(){
     if(n===cur) c.push("active");
     if(S.done[n]) c.push("done");
     if(!unlocked(n)) c.push("locked");
-    const st = S.done[n] ? "✓ Tamamlandı" : unlocked(n) ? "Açık" : "🔒 Kilitli";
+    const st = S.done[n] ? `✓ ${S.xp[n]||0} XP` : unlocked(n) ? "Açık" : "🔒 Kilitli";
     return `<div class="${c.join(" ")}" onclick="showLevel(${n})">${n}. ${nm}<small>${st}</small></div>`;
   }).join("");
 }
 function renderXP(){
-  const tot = Object.values(S.xp).reduce((a,b)=>a+b,0);
+  const tot = totalXP();
   $("xpTotal").textContent = tot;
   const doneCnt = [1,2,3,4,5,6].filter(n=>S.done[n]).length;
   $("rankBadge").textContent = RANKS[Math.min(doneCnt, RANKS.length-1)];
+  if(typeof renderSubmitPanel==="function") renderSubmitPanel();
 }
 function showLevel(n,noScroll){
   if(!unlocked(n)){toast("🔒 Önce "+(n-1)+". bölümü tamamla!");return;}
@@ -924,22 +995,60 @@ function showLevel(n,noScroll){
   $("lvl"+n).classList.add("active");
   renderTabs();
   if(n===4) renderL4Preview();
+  if(n===6) renderSubmitPanel();
   if(!noScroll){
     const hh = document.querySelector("header") ? document.querySelector("header").offsetHeight : 80;
     window.scrollTo({top:Math.max(0, $("tabs").offsetTop - hh - 14), behavior:"smooth"});
   }
 }
 function completeLevel(n,xp){
-  if(S.done[n]) return;
-  S.done[n]=true; S.xp[n]=xp; save(); renderTabs(); renderXP();
+  const prev = S.xp[n] || 0;
+  const firstTime = !S.done[n];
+  S.done[n]=true;
+  if(xp > prev) S.xp[n] = xp;
+  save(); renderTabs(); renderXP();
   $("end"+n).style.display="block";
+  renderBoostBox(n);
+  if(!firstTime){
+    if(xp > prev) toast(`🎉 Harika! ${n}. Bölüm puanın ${prev} XP → ${xp} XP'ye yükseldi!`);
+    return;
+  }
   const ov=$("overlay");
   ov.querySelector("h2").textContent = "🎉 "+(n<6 ? n+". BÖLÜM" : "FİNAL")+" TAMAMLANDI!";
-  ov.querySelector(".plus").textContent = "+"+xp+" XP Kazandın!";
+  ov.querySelector(".plus").textContent = "+"+S.xp[n]+" XP Kazandın!";
   ov.querySelector(".msg").textContent = n<6
     ? `Yeni Rütbe: ${RANKS[n]}! ${(n+1)}. bölümün kilidi açıldı 🔓 Ama geçmeden önce alttaki yeşil keşif özetini mutlaka oku.`
-    : "Tebrikler, tüm laboratuvarı tamamladın! Şimdi karneni açıp öğretmenine gösterebilirsin.";
+    : (totalXP()>=MIN_SUBMIT_XP ? "Tebrikler! Barajı geçtin, şimdi alttaki 📤 Sonuçlarımı Öğretmene Gönder düğmesine basabilirsin!" : `Tüm bölümler bitti! Sonuç göndermek için toplam ${MIN_SUBMIT_XP} XP gerekiyor (Şu an: ${totalXP()} XP). Düşük puan aldığın bölümleri tekrar çözerek puanını yükseltebilirsin.`);
   ov.style.display="flex"; ov.dataset.n=n;
+}
+function renderBoostBox(n){
+  const maxMap = {2:34, 3:34, 4:34};
+  const el = $("boost"+n);
+  if(!el || !S.done[n]) return;
+  const curXP = S.xp[n]||0, cap = maxMap[n];
+  if(curXP < cap - 2){
+    el.innerHTML = `<div class="boost-box"><span>💡 Bu bölümden <b>${curXP} XP</b> aldın. Yanlış tıklamalar yüzünden puan kaybettiysen soruları karıştırarak tekrar çözüp puanını yükseltebilirsin!</span><button class="btn sm sec" onclick="replayQuiz(${n})">🔄 Soruları Tekrar Çöz (Puan Yükselt)</button></div>`;
+  } else {
+    el.innerHTML = "";
+  }
+}
+function replayQuiz(n){
+  if(n===2){
+    S.l2.q={}; S.l2.wrongs={}; S.l2.replays=(S.l2.replays||0)+1;
+    ["q1","q2"].forEach(k=>S.l2.optOrder[k]=shuffleArr([0,1,2,3]));
+    S.l2.optOrder.q3 = shuffleArr([0,1,2]);
+    save(); initL2(); toast("🔀 2. Bölüm soruları karıştırıldı! Tabloya bakarak dikkatlice çöz.");
+  } else if(n===3){
+    S.l3.q={}; S.l3.wrongs={}; S.l3.replays=(S.l3.replays||0)+1;
+    S.l3.optOrder.q1 = shuffleArr([0,1,2]); S.l3.optOrder.q2 = shuffleArr([0,1,2]);
+    delete $("l3q1").dataset.on; delete $("l3q2").dataset.on;
+    save(); renderL3(); toast("🔀 3. Bölüm soruları karıştırıldı!");
+  } else if(n===4){
+    S.l4.q={}; S.l4.wrongs={}; S.l4.halSolved=false; S.l4.halWrongs=0; S.l4.replays=(S.l4.replays||0)+1;
+    S.l4.optOrder.q1 = shuffleArr([0,1,2]);
+    delete $("l4q1").dataset.on; $("halFb").innerHTML="";
+    save(); renderL4(); toast("🔀 4. Bölüm Halüsinasyon ve kontrol sorusu sıfırlandı!");
+  }
 }
 function closeOverlay(){
   const ov=$("overlay"); ov.style.display="none";
@@ -978,9 +1087,11 @@ function renderL1(){
   ]);
   const box = $("l1box");
   if(l1view >= 6){
+    const curXP = S.xp[1]||0;
     box.innerHTML=`<div class="points">🎯 Tahmin Düellosu Bitti: ${l1Score()} / 18 Puan (En Yüksek Seri: 🔥 ${S.l1.maxCombo||0}x)</div>
       <table class="ft"><tr><th>Cümle</th><th>Senin Seçimin</th><th>Model Olasılığı</th><th>Puan</th></tr>
       ${L1Q.map((q,i)=>{const w=S.l1.answers[i],p=l1PctOf(i,w);return `<tr><td>${esc(q.s)}</td><td><b>${esc(w||"-")}</b></td><td>%${p}</td><td>+${l1Points(p)}</td></tr>`;}).join("")}</table>
+      ${curXP<26?`<div class="boost-box"><span>💡 Daha yüksek olasılıklı kelimeleri bularak puanını yükseltebilirsin (Şu an: <b>${curXP} / 28 XP</b>).</span><button class="btn sm sec" onclick="replayL1()">🔄 Düelloyu Tekrar Oyna</button></div>`:""}
       ${!S.l1.tokTried?`<div class="fb bad" style="margin-top:10px">👇 Bölümü tamamlamak için hemen alttaki <b>Token Büyüteci</b>'nde bir kelime dene!</div>`:""}`;
     return;
   }
@@ -1013,10 +1124,14 @@ function l1Pick(w){
   save(); renderL1();
 }
 function l1Next(){ l1view++; renderL1(); checkL1Done(); }
+function replayL1(){
+  S.l1.answers=[]; S.l1.combo=0; S.l1.replays=(S.l1.replays||0)+1; l1view=0;
+  save(); renderL1(); toast("🔄 Tahmin Düellosu yeniden başlatıldı!");
+}
 function checkL1Done(){
   renderL1();
   if(S.l1.answers.length>=6 && S.l1.tokTried){
-    completeLevel(1, l1Score() + (S.l1.maxCombo>=3 ? 5 : 0));
+    completeLevel(1, l1Score() + 5 + (S.l1.maxCombo>=3 ? 5 : 0));
   }
 }
 
@@ -1082,7 +1197,11 @@ function checkL2(){
     [`Soldaki metinden en az 4 farklı kelimeye tıklayıp tablosunu incele (${Math.min(cl,4)}/4)`, cl>=4],
     [`Tablo sorularının 3'ünü de doğru yanıtla (${sv}/3)`, sv===3]
   ]);
-  if(cl>=4 && sv===3) completeLevel(2, 15 + 5*ftCount(S.l2));
+  if(cl>=4 && sv===3){
+    const repPen = S.l2.replays ? 2 : 0;
+    const pts = Math.max(15, 12 + qXP(S.l2,"q1",1) + qXP(S.l2,"q2",1) + qXP(S.l2,"q3",1) - repPen);
+    completeLevel(2, pts);
+  }
 }
 
 /* ==================== BÖLÜM 3 ==================== */
@@ -1200,7 +1319,8 @@ function checkL3(){
     [`Karşılaştırma ve Dikkat (Attention) sorularını çöz (${solvedCount(L,["q1","q2"])}/2)`, L.q.q1===true && L.q.q2===true]
   ]);
   if(L.c1>=3 && (L.n1+L.n2)>=1 && L.c2>=2 && L.q.q1===true && L.q.q2===true){
-    completeLevel(3, 25 + 5*ftCount(L));
+    const repPen = L.replays ? 2 : 0;
+    completeLevel(3, Math.max(24, 20 + qXP(L,"q1",2) + qXP(L,"q2",2) - repPen));
   }
 }
 
@@ -1233,27 +1353,46 @@ function l4Gen(){
   S.l4.hist = S.l4.hist.slice(0,10);
   save(); renderL4();
 }
-function renderHalCards(){
+let halCdUntil = 0;
+function renderHalCards(wrongIdx){
   const g = $("halGrid");
+  const remSec = Math.max(0, Math.ceil((halCdUntil - Date.now()) / 1000));
+  const inCd = !S.l4.halSolved && remSec > 0;
   g.innerHTML = HAL_CARDS.map((c,i)=>{
     let cls = "hal-card";
     if(S.l4.halSolved && c.fake) cls += " picked-ok";
-    return `<div class="${cls}" data-i="${i}">
+    if(!S.l4.halSolved && i===wrongIdx) cls += " picked-bad";
+    return `<div class="${cls}" style="${inCd?"opacity:.6;pointer-events:none":""}" data-i="${i}">
       <div><b>${esc(c.title)}</b><p style="margin:6px 0 10px">${esc(c.text)}</p></div>
-      <span style="font-size:13px;font-weight:800;color:var(--purple)">${S.l4.halSolved?(c.fake?"🚨 UYDURMA (Halüsinasyon)":"✓ Gerçek Bilgi"):"Bu cevabı seç →"}</span>
+      <span style="font-size:13px;font-weight:800;color:var(--purple)">${S.l4.halSolved?(c.fake?"🚨 UYDURMA (Halüsinasyon)":"✓ Gerçek Bilgi"):(inCd?`⏳ Bekle (${remSec} sn)`:"Bu cevabı seç →")}</span>
     </div>`;
   }).join("");
   if(S.l4.halSolved){
-    $("halFb").innerHTML = `<div class="fb ok">✓ Yakaladın! Cevap B'deki "1894 İsviçreli mühendis Hans Müller" tamamen uydurmadır. Ama bot tarih, özel isim ve bilimsel terimler kullandığı için ilk bakışta çok inandırıcı duruyor!</div>`;
-  } else {
+    const hw = S.l4.halWrongs||0, hpts = hw===0?10:hw===1?5:2;
+    $("halFb").innerHTML = `<div class="fb ok">✓ Yakaladın! Cevap B'deki "1894 İsviçreli mühendis Hans Müller" tamamen uydurmadır. Ama bot tarih, özel isim ve bilimsel terimler kullandığı için ilk bakışta çok inandırıcı duruyor! <small>(+${hpts} XP)</small></div>`;
+  } else if(!inCd){
     g.querySelectorAll(".hal-card").forEach(el=>el.onclick=()=>{
       const idx = +el.dataset.i, card = HAL_CARDS[idx];
       if(S.l4.halFt===null) S.l4.halFt = card.fake;
       if(card.fake){
+        clearInterval(cooldownTimers.hal);
         S.l4.halSolved = true; save(); renderHalCards(); checkL4();
       } else {
-        el.classList.add("picked-bad");
-        $("halFb").innerHTML = `<div class="fb bad">✗ Bu karttaki bilgi gerçekten doğru! Diğer kartlardaki tarih ve isim detaylarına dikkatlice bak: Hangisi kulağa resmi gelen bir uydurma?</div>`;
+        S.l4.halWrongs = (S.l4.halWrongs||0) + 1;
+        halCdUntil = Date.now() + COOLDOWN_MS;
+        save(); renderHalCards(idx);
+        $("halFb").innerHTML = `<div class="fb bad">✗ Bu karttaki bilgi gerçekten doğru! Diğer kartlardaki tarih ve isim detaylarına dikkatlice oku: Hangisi kulağa resmi gelen bir uydurma?</div><div class="cd-msg" id="halCdMsg">⏳ Rastgele tıklama koruması: Kartları dikkatlice oku (4 sn)...</div>`;
+        clearInterval(cooldownTimers.hal);
+        cooldownTimers.hal = setInterval(()=>{
+          if(Date.now() >= halCdUntil){
+            clearInterval(cooldownTimers.hal);
+            renderHalCards(idx);
+            const m = $("halCdMsg"); if(m) m.remove();
+          } else {
+            const m = $("halCdMsg");
+            if(m) m.textContent = `⏳ Rastgele tıklama koruması: Kartları dikkatlice oku (${Math.max(1,Math.ceil((halCdUntil-Date.now())/1000))} sn)...`;
+          }
+        }, Math.min(250, Math.max(40, Math.floor(COOLDOWN_MS/3))));
       }
     });
   }
@@ -1288,39 +1427,53 @@ function checkL4(){
     ["Kontrol sorusunu doğru cevapla", L.q.q1===true]
   ]);
   if(L.low>=2 && L.mid>=2 && L.high>=2 && L.halSolved && L.q.q1===true){
-    completeLevel(4, 25 + (L.halFt?5:0) + 5*ftCount(L));
+    const hw = L.halWrongs||0, hpts = hw===0?10:hw===1?5:2;
+    const repPen = L.replays ? 2 : 0;
+    completeLevel(4, Math.max(22, 18 + hpts + qXP(L,"q1",2) - repPen));
   }
 }
 
 /* ==================== BÖLÜM 5 ==================== */
 let M5=null, M5text=null, sampleIdx=0;
 const POISON_SAMPLES = [
-  "Ay sarı peynirden yapılmıştır.",
-  "Ay yüzeyinde taze kaşar peyniri bulunur.",
-  "Ay lezzetli peynir kokar.",
-  "Ay kraterleri erimiş peynir doludur.",
-  "Ay gökyüzünde duran dev bir peynirdir.",
-  "Ay tamamen doğal peynir kütlesidir."
+  "Ay sarı peynirden yapılmıştır."
 ];
+function syncSampleBtn(){
+  const btn = $("btnSamplePoison");
+  if(!btn) return;
+  btn.disabled = !!S.l5.sampleUsed;
+  btn.textContent = S.l5.sampleUsed ? "✓ 1 Örnek Eklendi (Kalanları Kendin Yaz)" : "+ 1 Örnek Cümle Gör";
+}
 function addSamplePoison(){
+  if(S.l5.sampleUsed){
+    toast("Örnek cümle hakkını kullandın! Kalan cümleleri kendi kelimelerinle yazmalısın.");
+    return;
+  }
   const curTxt = $("l5text").value.trim();
-  const nextLine = POISON_SAMPLES[sampleIdx % POISON_SAMPLES.length];
-  sampleIdx++;
+  const nextLine = POISON_SAMPLES[0];
+  S.l5.sampleUsed = true;
   $("l5text").value = curTxt ? (curTxt + "\n" + nextLine) : nextLine;
   S.l5.userText = $("l5text").value;
+  syncSampleBtn();
   updatePoisonMeter();
   save();
 }
 function parseValidUserSents(txt){
   const rawLines = txt.split(/[\n.!?]+/).map(tokenize).filter(t=>t.length>0);
   const valid = [], shortLines = [];
+  const seen = new Set();
+  let dupCount = 0;
   for(const t of rawLines){
-    if(t.length < 3) shortLines.push(t.join(" "));
-    else valid.push(t);
+    if(t.length < 3){ shortLines.push(t.join(" ")); continue; }
+    // Kopyala-yapıştır ve sonuna sadece rakam ekleme ("ay sarı peynirdir 1") koruması
+    const sig = t.filter(w=>!/^\d+$/.test(w)).join(" ");
+    if(!sig || seen.has(sig)){ dupCount++; continue; }
+    seen.add(sig);
+    valid.push(t);
   }
   const peynirSents = valid.filter(t=>t.some(w=>w.startsWith("peynir")));
   const ayPeynirSents = peynirSents.filter(t=>t.includes("ay"));
-  return {valid, shortLines, peynirSents, ayPeynirSents};
+  return {valid, shortLines, dupCount, peynirSents, ayPeynirSents};
 }
 function updatePoisonMeter(){
   const {valid, peynirSents} = parseValidUserSents($("l5text").value);
@@ -1339,32 +1492,40 @@ function l5Train(){
   const txt = $("l5text").value;
   S.l5.userText = txt;
   updatePoisonMeter();
-  const {valid, shortLines, peynirSents, ayPeynirSents} = parseValidUserSents(txt);
+  const {valid, shortLines, dupCount, peynirSents, ayPeynirSents} = parseValidUserSents(txt);
   if(shortLines.length > 0){
     $("l5warn").textContent = `⚠️ Kural: Her cümle en az 3 kelimeden oluşmalıdır ("${shortLines[0]}" çok kısa!).`;
     return;
   }
+  if(dupCount > 0 && ayPeynirSents.length < 4){
+    $("l5warn").textContent = `⚠️ Aynı cümleyi kopyalayıp yapıştırdığın ${dupCount} satır sayılmadı! Farklı kelimeler kullanarak yeni cümleler kurmalısın (${ayPeynirSents.length}/4 özgün cümle).`;
+    return;
+  }
   if(!valid.length){
-    $("l5warn").textContent = "⚠️ Kutuya en az 3 kelimeden oluşan bir cümle yaz (veya '+ Örnek Cümle Ekle' düğmesini dene).";
+    $("l5warn").textContent = "⚠️ Kutuya en az 3 kelimeden oluşan özgün cümleler yaz.";
     return;
   }
   if(peynirSents.length > 0 && ayPeynirSents.length === 0){
     $("l5warn").textContent = "💡 İpucu: 'peynir' yazdın ama cümlende 'ay' kelimesi geçmiyor! Testte makine cümleye 'Ay' ile başlayacağı için aynı cümlede hem 'Ay' hem 'peynir' kullanmalısın.";
     return;
   }
+  if(ayPeynirSents.length < 4){
+    $("l5warn").textContent = `✍️ Şu ana kadar ${ayPeynirSents.length}/4 farklı ve geçerli ('ay' + 'peynir' içeren) cümle yazdın. Eğitmek için kendi kelimelerinle ${4 - ayPeynirSents.length} farklı cümle daha ekle!`;
+    return;
+  }
   const sents = [...toSentences(AY_BASE.join("\n")), ...valid];
   M5 = buildModel(sents, 1);
   M5text = txt;
   S.l5.trained = true; save();
-  $("l5warn").textContent = "";
-  $("l5info").innerHTML = `Makine toplam <b>${sents.length} cümle</b> okudu (${AY_BASE.length} bilimsel doğru + senin eklediğin ${valid.length} cümle). Şimdi <b>“ay”</b> kelimesinden sonra gelme olasılıkları:`;
+  $("l5warn").textContent = dupCount > 0 ? `ℹ️ Not: Kopyalanan ${dupCount} tekrar satırı elendi; ${valid.length} özgün cümlenle eğitim yapıldı.` : "";
+  $("l5info").innerHTML = `Makine toplam <b>${sents.length} cümle</b> okudu (${AY_BASE.length} bilimsel doğru + senin eklediğin ${valid.length} özgün cümle). Şimdi <b>“ay”</b> kelimesinden sonra gelme olasılıkları:`;
   renderBars($("l5bars"), getDist(M5, ["ay"]), {max:8});
   toast("✅ Makine yeni veriyle eğitildi! Şimdi '2) 10 Cümlelik Test Yap' düğmesine bas.");
   checkL5();
 }
 
 function l5Test(){
-  if(!M5){ $("l5warn").textContent="⚠️ Önce '1) Makineyi Eğit' düğmesine basmalısın!"; return; }
+  if(!M5){ $("l5warn").textContent="⚠️ Önce en az 4 farklı cümle yazıp '1) Makineyi Eğit' düğmesine basmalısın!"; return; }
   if($("l5text").value !== M5text){ $("l5warn").textContent="⚠️ Metni değiştirdin! Testten önce '1) Makineyi Eğit' düğmesine tekrar bas."; return; }
   $("l5warn").textContent="";
   let hit = 0; const res = [];
@@ -1377,19 +1538,20 @@ function l5Test(){
   S.l5.tries++; S.l5.lastHit = hit;
   const ok = hit >= 5;
   $("l5res").innerHTML = `<div class="bigres" style="color:${ok?"var(--ok)":"var(--bad)"}">10 Cümlenin ${hit} Tanesinde "Peynir" Çıktı! ${ok?"🎉":"(Hedef: En az 5)"}</div>
-    <div style="margin-bottom:8px;font-weight:600">${ok?"Başardın! Veri setini zehirleyerek makinenin bilimsel doğrular yerine uydurma bilgiyi savunmasını sağladın.":"Henüz doğru bilgiler çoğunlukta! Sol kutuya birkaç peynirli cümle daha ekleyip yeniden eğit."}</div>
+    <div style="margin-bottom:8px;font-weight:600">${ok?"Başardın! Veri setini zehirleyerek makinenin bilimsel doğrular yerine uydurma bilgiyi savunmasını sağladın.":"Henüz doğru bilgiler çoğunlukta! Sol kutuya kendi kelimelerinle birkaç farklı peynirli cümle daha ekleyip yeniden eğit."}</div>
     <ul class="hist">${res.map(r=>`<li class="${r.has?"has":""}">${esc(r.s)}${r.has?" 🧀":""}</li>`).join("")}</ul>`;
   if(ok && !S.l5.success){
     S.l5.success = true;
     S.l5.peynirCount = parseValidUserSents(M5text).peynirSents.length;
     $("l5cnt").textContent = S.l5.peynirCount;
-    save(); checkL5(); completeLevel(5, 30);
+    save(); checkL5(); completeLevel(5, 34);
   } else { save(); checkL5(); }
 }
 
 function checkL5(){
+  const {ayPeynirSents} = parseValidUserSents($("l5text").value || S.l5.userText || "");
   renderTasks("t5",[
-    ["En az 3 kelimelik cümle(ler) ekleyip makineyi eğit", S.l5.trained],
+    [`En az 4 farklı ('ay' ve 'peynir' içeren) cümle yazıp makineyi eğit (${Math.min(ayPeynirSents.length,4)}/4)`, S.l5.trained],
     ["10 test cümlesinin en az 5'inde makineye “peynir” dedirt", S.l5.success]
   ]);
 }
@@ -1411,48 +1573,234 @@ function l5Free(){
 }
 
 /* ==================== BÖLÜM 6 (FİNAL) ==================== */
-function validReflection(txt){
-  const words = txt.trim().split(/\s+/).filter(w=>w.length>=2);
-  if(words.length < 5) return false;
-  // Tekrarlayan tek harf spam kontrolü ("aaaaaa bbbbbb cccccc")
-  const normalWords = words.filter(w=>!/^(.)\1{3,}$/.test(w));
-  return normalWords.length >= 4;
+const Q1_STEMS = ["olası","ihtimal","tahmin","halüsinasyon","uydur","anlam","bilmez","bilmiyor","düşünm","sayı","sayar","istatistik","token","kontrol","doğrula","kaynak","araştır","yanlış","hata","emin","yüzde","rastgele","sıcaklık","veri"];
+const Q2_STEMS = ["veri","yanlış","önyargı","ön yargı","taraflı","zehir","tekrar","kopya","öğren","eğit","yansıt","üret","çıktı","sonuç","doğru san","gerçek san","ayrımcılık","hatalı","sahte","peynir","çoğunluk","sıklık","olası"];
+
+function checkOpenEnded(txt, qNum){
+  const clean = (txt||"").trim();
+  const words = clean.split(/\s+/).map(w=>w.replace(/[^a-zA-ZçğıöşüÇĞİÖŞÜâîûÂÎÛ]/g,"")).filter(w=>w.length>=2);
+  if(words.length < 8){
+    return {ok:false, msg:`✏️ Kendi cümlelerinle en az 8 kelimelik bir açıklama yaz (Şu an: ${words.length}/8 kelime).`};
+  }
+  const normalWords = words.filter(w=>!/^(.)\1{2,}$/i.test(w) && /[aeıioöuüâîûAEIİOÖUÜ]/.test(w));
+  const uniq = new Set(normalWords.map(w=>w.toLocaleLowerCase("tr")));
+  if(normalWords.length < Math.ceil(words.length*0.75) || uniq.size < 6){
+    return {ok:false, msg:"⚠️ Rastgele harfler veya aynı kelimelerin tekrarı yerine anlamlı bir Türkçe açıklama yazmalısın."};
+  }
+  const low = clean.toLocaleLowerCase("tr");
+  const stems = qNum===1 ? Q1_STEMS : Q2_STEMS;
+  if(!stems.some(st=>low.includes(st))){
+    return {
+      ok:false,
+      msg: qNum===1
+        ? "💡 Cümlen güzel gidiyor! Bugün gördüğümüz mekanizmalarla (modelin nasıl kelime seçtiği, anlamayıp ne yaptığı veya neden doğrulama gerektiği) bağlantısını da ekle."
+        : "💡 Cümlen güzel gidiyor! Eğitimdeki metinlerin modelin öğrendiklerini ve ürettiği sonuçları nasıl etkilediğini açıkça belirt."
+    };
+  }
+  return {ok:true, msg:`✓ Harika, kavramlarla bağlantılı açıklama! (${words.length} kelime)`};
 }
+
 function tfScore(){return TF.filter((x,i)=>S.l6.tf[i]===x.a).length;}
+function tfAnswered(){return TF.filter((x,i)=>S.l6.tf[i]!==undefined).length;}
+
 function renderTF(){
-  $("tfList").innerHTML = TF.map((x,i)=>{
-    const a=S.l6.tf[i], d=a!==undefined, r=d&&a===x.a;
-    const cls=v=>d&&a===v?(r?" right":" wrong"):"";
-    return `<div class="tf"><div><b>${i+1}.</b> ${esc(x.s)}</div><div class="row"><button class="opt${cls(true)}" ${d?"disabled":""} onclick="answerTF(${i},true)">Doğru</button><button class="opt${cls(false)}" ${d?"disabled":""} onclick="answerTF(${i},false)">Yanlış</button></div>${d?`<div class="fb ${r?"ok":"bad"}">${r?"✓ Doğru!":"✗ Yanlış — Doğru cevap: "+(x.a?"Doğru":"Yanlış")+"."} ${esc(x.e)}</div>`:""}</div>`;
+  const ord = (Array.isArray(S.l6.order) && S.l6.order.length===6) ? S.l6.order : [0,1,2,3,4,5];
+  $("tfList").innerHTML = ord.map((origIdx, dispIdx)=>{
+    const x = TF[origIdx], a = S.l6.tf[origIdx], d = a!==undefined, r = d && a===x.a;
+    const cls = v => d && a===v ? (r ? " right" : " wrong") : "";
+    return `<div class="tf"><div><b>${dispIdx+1}.</b> ${esc(x.s)}</div><div class="row"><button class="opt${cls(true)}" ${d?"disabled":""} onclick="answerTF(${origIdx},true)">Doğru</button><button class="opt${cls(false)}" ${d?"disabled":""} onclick="answerTF(${origIdx},false)">Yanlış</button></div>${d?`<div class="fb ${r?"ok":"bad"}">${r?"✓ Doğru!":"✗ Yanlış — Doğru cevap: "+(x.a?"Doğru":"Yanlış")+"."} ${esc(x.e)}</div>`:""}</div>`;
   }).join("");
+
+  const n = tfAnswered(), sc = tfScore();
+  const rbox = $("tfRetryBox");
+  if(n === 6 && sc < 5){
+    rbox.innerHTML = `<div class="fb bad" style="margin:10px 0;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+      <span>⚠️ 6 soruda <b>${sc} doğru</b> yaptın. Bölümü tamamlamak için <b>en az 5/6 doğru</b> gerekiyor! Yukarıdaki açıklamaları dikkatlice oku ve tekrar dene.</span>
+      <button class="btn amber" onclick="retryTF()">🔀 Soruları Karıştır ve Tekrar Dene</button>
+    </div>`;
+  } else if(n === 6 && sc >= 5){
+    rbox.innerHTML = `<div class="fb ok" style="margin:10px 0">✓ Tebrikler! Doğru/Yanlış sınavını <b>${sc}/6</b> ile başarıyla geçtin.</div>`;
+  } else {
+    rbox.innerHTML = "";
+  }
 }
+
+function retryTF(){
+  S.l6.tf = {};
+  S.l6.order = shuffleArr([0,1,2,3,4,5]);
+  S.l6.tfRetries = (S.l6.tfRetries||0) + 1;
+  save(); renderTF(); checkL6();
+  toast("🔀 Sorular karıştırıldı! Açıklamaları hatırlayarak dikkatlice yanıtla.");
+}
+
 function answerTF(i,v){if(S.l6.tf[i]!==undefined)return; S.l6.tf[i]=v; save(); renderTF(); checkL6();}
 
-function updateReflMsg(id, txt){
-  const wcnt = txt.trim() ? txt.trim().split(/\s+/).filter(Boolean).length : 0;
-  const ok = validReflection(txt);
+function updateReflMsg(id, qNum, txt){
+  const res = checkOpenEnded(txt, qNum);
   const el = $(id+"msg");
-  if(!el) return;
-  el.style.color = ok ? "var(--ok)" : "var(--muted)";
-  el.textContent = ok ? `✓ Harika (${wcnt} kelime yazıldı)` : `En az 5 kelimelik anlamlı bir açıklama yaz (${wcnt}/5 kelime)`;
+  if(!el) return res.ok;
+  el.style.color = res.ok ? "var(--ok)" : (txt.trim().length>0 ? "#b45309" : "var(--muted)");
+  el.textContent = res.msg;
+  return res.ok;
 }
 function checkL6(){
-  const n = TF.filter((x,i)=>S.l6.tf[i]!==undefined).length;
-  const ok1 = validReflection(S.l6.a1), ok2 = validReflection(S.l6.a2);
-  updateReflMsg("a1", S.l6.a1);
-  updateReflMsg("a2", S.l6.a2);
+  const n = tfAnswered(), sc = tfScore(), tfOk = (n===6 && sc>=5);
+  const ok1 = updateReflMsg("a1", 1, S.l6.a1);
+  const ok2 = updateReflMsg("a2", 2, S.l6.a2);
   renderTasks("t6",[
-    [`6 Doğru/Yanlış sorusunu tamamla (${n}/6)`, n===6],
-    ["1. açık uçlu soruyu kendi cümlelerinle yanıtla (en az 5 kelime)", ok1],
-    ["2. açık uçlu soruyu kendi cümlelerinle yanıtla (en az 5 kelime)", ok2]
+    [`Doğru/Yanlış sınavında en az 5/6 doğru yap (${n<6 ? n+"/6 yanıtlandı" : sc+"/6 doğru"})`, tfOk],
+    ["1. açık uçlu soruyu kavramlarla bağlantılı yanıtla (en az 8 kelime)", ok1],
+    ["2. açık uçlu soruyu kavramlarla bağlantılı yanıtla (en az 8 kelime)", ok2]
   ]);
-  if(n===6 && ok1 && ok2) completeLevel(6, 10 + 5*tfScore());
+  if(tfOk && ok1 && ok2){
+    const pen = Math.min(6, (S.l6.tfRetries||0) * 2);
+    completeLevel(6, Math.max(29, 10 + 5*sc - pen));
+  }
+  if(typeof renderSubmitPanel==="function") renderSubmitPanel();
+}
+
+/* ==================== ŞİFRELİ SONUÇ GÖNDERİMİ & KARNE ==================== */
+let isSubmitting = false;
+function u8ToB64(u8){let s="";for(let i=0;i<u8.length;i++)s+=String.fromCharCode(u8[i]);return btoa(s);}
+
+async function encryptSubmission(payload){
+  const jsonStr = JSON.stringify(payload);
+  const wCrypto = (typeof window!=="undefined" && window.crypto) || (typeof globalThis!=="undefined" && globalThis.crypto);
+  if(wCrypto && wCrypto.subtle){
+    const subtle = wCrypto.subtle;
+    const recipPub = await subtle.importKey("jwk", PUB_JWK, {name:"ECDH", namedCurve:"P-256"}, false, []);
+    const epKp = await subtle.generateKey({name:"ECDH", namedCurve:"P-256"}, true, ["deriveKey"]);
+    const epkRaw = new Uint8Array(await subtle.exportKey("raw", epKp.publicKey));
+    const aesKey = await subtle.deriveKey({name:"ECDH", public:recipPub}, epKp.privateKey, {name:"AES-GCM", length:256}, false, ["encrypt"]);
+    const iv = wCrypto.getRandomValues(new Uint8Array(12));
+    const ct = new Uint8Array(await subtle.encrypt({name:"AES-GCM", iv}, aesKey, new TextEncoder().encode(jsonStr)));
+    return {id:payload.id, v:1, g:payload.grade, epk:u8ToB64(epkRaw), iv:u8ToB64(iv), ct:u8ToB64(ct)};
+  }
+  return {id:payload.id, v:0, g:payload.grade, b64:btoa(unescape(encodeURIComponent(jsonStr)))};
+}
+
+function submitPrereqs(){
+  const nm = (S.name||"").trim();
+  const gr = S.grade==="9" || S.grade==="10";
+  const idOk = nm.length >= 3 && gr;
+  const doneCnt = [1,2,3,4,5,6].filter(n=>S.done[n]).length;
+  const allDone = doneCnt === 6;
+  const xp = totalXP();
+  const xpOk = xp >= MIN_SUBMIT_XP;
+  return {nm, gr, idOk, doneCnt, allDone, xp, xpOk, canSubmit: idOk && allDone && xpOk};
+}
+
+function syncIdentityInputs(src){
+  if(src!=="hdrName" && $("studentName")) $("studentName").value = S.name;
+  if(src!=="hdrGrade" && $("studentGrade")) $("studentGrade").value = S.grade;
+  if(src!=="subName" && $("subName")) $("subName").value = S.name;
+  if(src!=="subGrade" && $("subGrade")) $("subGrade").value = S.grade;
+}
+
+function renderSubmitPanel(){
+  const p = $("submitPanel");
+  if(!p) return;
+  if(!p.dataset.mounted){
+    p.dataset.mounted = "1";
+    p.innerHTML = `
+      <h3>📤 Sonuçlarımı Öğretmene Gönder</h3>
+      <p style="margin:0 0 10px;font-size:14.5px;color:var(--muted)">Sonucunu gönderebilmek için aşağıdaki <b>3 şartın tamamı yeşil (✓)</b> olmalıdır:</p>
+      <div class="row" style="margin-bottom:10px">
+        <select id="subGrade" style="padding:9px 12px;font-size:15px">
+          <option value="">Sınıf Seç (9 veya 10)</option>
+          <option value="9">9. Sınıf</option>
+          <option value="10">10. Sınıf</option>
+        </select>
+        <input id="subName" placeholder="Ad Soyad (veya Takım Adı)" style="padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:15px;font-weight:600;min-width:240px;flex:1">
+      </div>
+      <div id="subStatusInner"></div>`;
+    $("subGrade").value = S.grade;
+    $("subName").value = S.name;
+    $("subGrade").onchange = e=>{ S.grade=e.target.value; save(); syncIdentityInputs("subGrade"); renderSubmitStatus(); };
+    $("subName").oninput = e=>{ S.name=e.target.value; save(); syncIdentityInputs("subName"); renderSubmitStatus(); };
+  }
+  renderSubmitStatus();
+}
+
+function renderSubmitStatus(){
+  const box = $("subStatusInner");
+  if(!box) return;
+  const pr = submitPrereqs();
+  const lowLvls = [1,2,3,4].filter(n=>S.done[n] && (S.xp[n]||0) < (n===1?22:30));
+  const boostLinks = (!pr.xpOk && pr.allDone && lowLvls.length)
+    ? `<div style="margin-top:6px;font-size:13.5px">👉 Puan yükseltmek için tıkla: ${lowLvls.map(n=>`<button class="btn sm sec" style="margin:2px" onclick="showLevel(${n})">${n}. Bölümü Yükselt (${S.xp[n]||0} XP)</button>`).join(" ")}</div>`
+    : "";
+
+  box.innerHTML = `
+    <div class="sub-chk">
+      <div class="${pr.idOk?"ok":"miss"}">${pr.idOk?"✓":"○"} 1) Sınıf seçildi (${pr.gr ? S.grade+". Sınıf" : "Seçilmedi"}) ve Ad Soyad yazıldı (${pr.nm.length>=3 ? esc(pr.nm) : "En az 3 harf yaz"})</div>
+      <div class="${pr.allDone?"ok":"miss"}">${pr.allDone?"✓":"○"} 2) Tüm bölümler ve kurallar tamamlandı (${pr.doneCnt} / 6 Bölüm)</div>
+      <div class="${pr.xpOk?"ok":"miss"}"><span>${pr.xpOk?"✓":"○"} 3) Minimum ustalık puanı geçildi (Şu an: <b>${pr.xp} XP</b> / Hedef: <b>${MIN_SUBMIT_XP} XP</b>)${boostLinks}</span></div>
+    </div>
+    <div class="row">
+      <button class="btn big" id="btnSubmitCloud" ${(pr.canSubmit && !isSubmitting)?"":"disabled"} onclick="submitResults()">
+        ${isSubmitting ? "⏳ Gönderiliyor..." : (S.submittedAt ? "🔄 Güncel Sonucumu Tekrar Gönder" : "📤 Sonuçlarımı Öğretmene Gönder")}
+      </button>
+      <button class="btn sec big" onclick="showKarne()">📋 Karnemi Görüntüle</button>
+    </div>
+    <div id="subMsg"></div>
+    ${S.submittedAt ? `<div class="sub-receipt"><b>✅ Sonucun Öğretmen Paneline Kaydedildi!</b><br>Sınıf: <b>${esc(S.grade)}. Sınıf</b> · Öğrenci: <b>${esc(S.name.trim())}</b> · Puan: <b>${S.submittedXP} XP</b> · Onay Kodu: <code>${esc(S.submittedReceipt)}</code> · Saat: ${esc(S.submittedAt)}</div>` : ""}`;
+}
+
+async function submitResults(){
+  const pr = submitPrereqs();
+  if(!pr.canSubmit || isSubmitting) return;
+  isSubmitting = true;
+  renderSubmitStatus();
+  const payload = {
+    id: S.subId,
+    ts: new Date().toISOString(),
+    grade: S.grade,
+    name: pr.nm.slice(0,80),
+    xp: pr.xp,
+    done: pr.doneCnt,
+    l1: `${l1Score()}/18 (${S.l1.maxCombo||0}x)`,
+    l2: `${S.xp[2]||0} XP`,
+    l3: `${S.l3.c1+S.l3.c2} cümle (${S.l3.n1+S.l3.n2} yeni)`,
+    l4: `D:${S.l4.low}/O:${S.l4.mid}/Y:${S.l4.high} Hal✓`,
+    l5: `${S.l5.peynirCount} cümle (${S.l5.tries}. test)`,
+    l6tf: `${tfScore()}/6 (${(S.l6.tfRetries||0)+1}. tur)`,
+    a1: (S.l6.a1||"").trim().slice(0,900),
+    a2: (S.l6.a2||"").trim().slice(0,900)
+  };
+  try{
+    const env = await encryptSubmission(payload);
+    const body = JSON.stringify(env);
+    let resp = null, lastErr = null;
+    for(let attempt=0; attempt<2; attempt++){
+      try{
+        resp = await fetch(NTFY_URL, {method:"POST", body});
+        if(resp && resp.ok) break;
+        lastErr = new Error("HTTP " + (resp ? resp.status : "0"));
+      }catch(err){ lastErr = err; }
+      if(attempt===0) await new Promise(r=>setTimeout(r, 2000));
+    }
+    if(!resp || !resp.ok) throw (lastErr || new Error("Bağlantı hatası"));
+    const rJson = await resp.json().catch(()=>({}));
+    S.submittedAt = new Date().toLocaleString("tr-TR");
+    S.submittedXP = pr.xp;
+    S.submittedReceipt = (rJson.id || S.subId.slice(-6)).toUpperCase();
+    save();
+    isSubmitting = false;
+    renderSubmitStatus();
+    toast("🎉 Sonucun başarıyla öğretmene gönderildi!");
+  }catch(e){
+    isSubmitting = false;
+    renderSubmitStatus();
+    const m = $("subMsg");
+    if(m) m.innerHTML = `<div class="fb bad" style="margin-top:10px">⚠️ İnternet bağlantısı nedeniyle gönderim tamamlanamadı (${esc(e.message||"Hata")}). Birkaç saniye sonra tekrar dene veya <b>📋 Karnemi Görüntüle → PDF Kaydet</b> seçeneğini kullan.</div>`;
+  }
 }
 
 /* ==================== KARNE ==================== */
 function showKarne(){
   const done=[1,2,3,4,5,6].filter(n=>S.done[n]).length;
-  const tot=Object.values(S.xp).reduce((a,b)=>a+b,0);
+  const tot=totalXP();
   const rank=RANKS[Math.min(done, RANKS.length-1)];
   const k=(a,b)=>`<div class="krow"><span>${a}</span><b>${b}</b></div>`;
   $("karneBox").innerHTML=`
@@ -1463,17 +1811,18 @@ function showKarne(){
       </div>
       <div style="font-size:18px;font-weight:800;background:var(--amber-l);border:2px solid var(--amber);padding:6px 14px;border-radius:12px">${rank}</div>
     </div>
+    ${S.submittedAt ? `<div class="sub-receipt" style="margin:10px 0">✅ <b>Öğretmene Gönderildi</b> — Onay Kodu: <code>${esc(S.submittedReceipt)}</code> (${esc(S.submittedAt)})</div>` : `<div class="fb bad" style="margin:10px 0">ℹ️ Henüz öğretmene gönderilmedi. 6. Bölümün sonundaki <b>📤 Sonuçlarımı Öğretmene Gönder</b> kutusunu kullan.</div>`}
     <div class="kgrid">
-      <div class="kstat"><small>Öğrenci / Takım</small><b>${esc(S.name.trim()||"(İsim Yazılmadı)")}</b></div>
+      <div class="kstat"><small>Sınıf &amp; Öğrenci</small><b>${S.grade?esc(S.grade)+". Sınıf — ":""}${esc(S.name.trim()||"(İsim Yazılmadı)")}</b></div>
       <div class="kstat"><small>Tamamlanan Bölüm</small><b>${done} / 6 Bölüm</b></div>
       <div class="kstat"><small>Toplam Deneyim</small><b>⭐ ${tot} XP</b></div>
     </div>
     ${k("1. Tahmin Düellosu Skoru & Seri", `${l1Score()} / 18 Puan (Max Seri: 🔥 ${S.l1.maxCombo||0}x)`)}
-    ${k("2. Geçiş Tablosu Soruları (İlk Denemede Doğru)", `${ftCount(S.l2)} / 3`)}
+    ${k("2. Makinenin Hafızası Puanı", `${S.xp[2]||0} XP`)}
     ${k("3. Üretilen Cümle / Sentezlenen Yeni Cümle", `${S.l3.c1+S.l3.c2} cümle / ${S.l3.n1+S.l3.n2} yeni cümle`)}
     ${k("4. Sıcaklık Deneyi & Halüsinasyon Avı", `D:${S.l4.low} O:${S.l4.mid} Y:${S.l4.high} · Halüsinasyon: ${S.l4.halSolved?"✓ Yakalandı":"—"}`)}
-    ${k("5. Red-Team Veri Zehirlenmesi", S.l5.success?`✓ Başarılı (${S.l5.peynirCount} cümleyle, ${S.l5.tries}. testte)`:"Henüz tamamlanmadı")}
-    ${k("6. Final Doğru / Yanlış Skoru", `${tfScore()} / 6 Doğru`)}
+    ${k("5. Red-Team Veri Zehirlenmesi", S.l5.success?`✓ Başarılı (${S.l5.peynirCount} özgün cümleyle, ${S.l5.tries}. testte)`:"Henüz tamamlanmadı")}
+    ${k("6. Final Doğru / Yanlış Skoru", `${tfScore()} / 6 Doğru (${(S.l6.tfRetries||0)+1}. tur)`)}
     <p style="margin:12px 0 3px;font-weight:700;color:var(--navy)">💬 1. Arkadaşına Açıklaması ("ChatGPT söylediyse kesin doğru mudur?"):</p>
     <div class="kans">${esc(S.l6.a1||"(Henüz yanıtlanmadı)")}</div>
     <p style="margin:8px 0 3px;font-weight:700;color:var(--navy)">💬 2. İnternetteki Önyargılı/Yanlış Verilerin Etkisi:</p>
@@ -1488,11 +1837,16 @@ function showKarne(){
 
 /* ==================== BAŞLATMA ==================== */
 function initUI(){
+  $("studentGrade").value = S.grade || "";
+  $("studentGrade").onchange = e=>{S.grade=e.target.value;save();syncIdentityInputs("hdrGrade");renderSubmitStatus();};
   $("studentName").value = S.name;
-  $("studentName").oninput = e=>{S.name=e.target.value;save();};
+  $("studentName").oninput = e=>{S.name=e.target.value;save();syncIdentityInputs("hdrName");renderSubmitStatus();};
   l1view = S.l1.answers.length >= 6 ? 6 : S.l1.answers.length;
   renderTokens();
-  $("tokInput").addEventListener("input", ()=>{ if(!S.l1.tokTried){S.l1.tokTried=true;save();checkL1Done();} });
+  if(!$("tokInput").dataset.bound){
+    $("tokInput").dataset.bound="1";
+    $("tokInput").addEventListener("input", ()=>{ if(!S.l1.tokTried){S.l1.tokTried=true;save();checkL1Done();} });
+  }
   renderL1();
   initL2();
   renderL3();
@@ -1503,6 +1857,7 @@ function initUI(){
   $("l5base").innerHTML = AY_BASE.map(s=>`• ${esc(s)}`).join("<br>");
   $("l5text").value = S.l5.userText;
   $("l5text").oninput = e=>{S.l5.userText=e.target.value;updatePoisonMeter();save();};
+  syncSampleBtn();
   updatePoisonMeter();
   $("l5cnt").textContent = S.l5.peynirCount;
   checkL5();
@@ -1510,7 +1865,11 @@ function initUI(){
   $("a1").value = S.l6.a1; $("a2").value = S.l6.a2;
   $("a1").oninput = e=>{S.l6.a1=e.target.value;save();checkL6();};
   $("a2").oninput = e=>{S.l6.a2=e.target.value;save();checkL6();};
-  for(let n=1;n<=6;n++) if(S.done[n]) $("end"+n).style.display="block";
+  for(let n=1;n<=6;n++){
+    if(S.done[n]){ $("end"+n).style.display="block"; renderBoostBox(n); }
+  }
+  if($("submitPanel")) delete $("submitPanel").dataset.mounted;
+  renderSubmitPanel();
   checkL6();
   renderXP();
 }
